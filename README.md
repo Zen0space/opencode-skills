@@ -1,15 +1,71 @@
 # OpenCode Skills & Agents
 
-A collection of reusable skills and agents for [OpenCode](https://opencode.ai) - AI-powered development assistant.
+A collection of reusable skills and agents for [OpenCode](https://opencode.ai) - an AI-powered development assistant that runs in your terminal.
 
-## Quick Start
+## What This Does
 
-1. Copy the `.opencode` folder to your project root:
-   ```bash
-   cp -r .opencode /path/to/your/project/
-   ```
+When you add these files to your project, OpenCode will:
+- Follow your coding conventions (formatting, patterns, etc.)
+- Write commit messages in your preferred format
+- Audit your code for security vulnerabilities
+- Use proper patterns for your tech stack
 
-2. OpenCode will automatically detect and use the skills and agents.
+## Installation
+
+Choose one of the methods below:
+
+### Method 1: Download ZIP (Easiest)
+
+1. Click the green **"Code"** button at the top of this page
+2. Select **"Download ZIP"**
+3. Extract the ZIP file
+4. Copy the `.opencode` folder to your project root
+
+```
+your-project/
+├── .opencode/     ← Paste this folder here
+├── src/
+├── package.json
+└── ...
+```
+
+### Method 2: Clone & Copy
+
+```bash
+# Clone this repository
+git clone https://github.com/Zen0space/opencode-skills.git
+
+# Copy to your project (replace /path/to/your/project)
+cp -r opencode-skills/.opencode /path/to/your/project/
+```
+
+### Method 3: Download Single File
+
+If you only want one skill, download just that file:
+
+1. Navigate to the file in GitHub (e.g., `.opencode/skills/commit/SKILL.md`)
+2. Click **"Raw"** button
+3. Right-click → Save as
+4. Create the folder structure in your project and save the file
+
+```
+your-project/
+└── .opencode/
+    └── skills/
+        └── commit/
+            └── SKILL.md   ← Save here
+```
+
+## Verify Installation
+
+Open your project in OpenCode and check that it recognizes the skills:
+
+```bash
+cd /path/to/your/project
+opencode
+```
+
+OpenCode automatically loads any `.opencode/` folder in your project root.
 
 ## What's Included
 
@@ -29,43 +85,83 @@ A collection of reusable skills and agents for [OpenCode](https://opencode.ai) -
 | `security` | Security patterns, auth approach, and anti-patterns |
 | `webapp` | React, TypeScript, and Next.js patterns |
 
-## Customization Guide
+## Customization
 
-### Modify Project Conventions (`memories/SKILL.md`)
+### Step 1: Update Project Conventions
 
-The `memories/SKILL.md` contains coding conventions. Update it to match your project:
+Edit `.opencode/skills/memories/SKILL.md` to match your project:
 
 ```markdown
 ## Project Info
-- Framework: Your framework here
-- Language: Your language
-- Database: Your database
+- Framework: Express        # Change to your framework
+- Language: TypeScript 5   # Change to your language
+- Database: PostgreSQL     # Change to your database
+- Validation: Zod          # Change to your validation library
 ```
 
-### Add Your Own Skills
+### Step 2: Update Commit Conventions (Optional)
 
-Create a new skill in `.opencode/skills/your-skill/SKILL.md`:
+Edit `.opencode/skills/commit/SKILL.md` if you use different commit formats.
+
+### Step 3: Remove What You Don't Need
+
+Delete any skills you don't want:
+
+```bash
+# Remove mobile skill if you're not building a mobile app
+rm -rf .opencode/skills/mobile
+
+# Remove security agent if you don't need security audits
+rm -rf .opencode/agents/security
+rm -rf .opencode/security
+```
+
+## Adding Your Own Skills
+
+Create a new folder in `.opencode/skills/`:
+
+```
+.opencode/
+└── skills/
+    └── my-skill/
+        └── SKILL.md
+```
+
+**SKILL.md template:**
 
 ```markdown
 ---
-name: your-skill
+name: my-skill
 description: What this skill does
 ---
 
-# Your Skill Content
+# My Skill
 
 ## Guidelines
 - Rule 1
 - Rule 2
+
+## Code Examples
+```typescript
+// Example code
+```
 ```
 
-### Add Your Own Agents
+## Adding Your Own Agents
 
-Create a new agent in `.opencode/agents/your-agent.md`:
+Create a new file in `.opencode/agents/`:
+
+```
+.opencode/
+└── agents/
+    └── my-agent.md
+```
+
+**Agent template:**
 
 ```markdown
 ---
-description: Agent description
+description: Agent description shown in OpenCode
 mode: subagent
 tools:
   write: true
@@ -74,11 +170,15 @@ tools:
 ---
 
 You are a [role] agent specialized in [domain].
+
+## Your Task
+- Task 1
+- Task 2
 ```
 
 ## Security Agent Features
 
-The security agent includes an XP-based leveling system:
+The security agent includes an XP-based leveling system that tracks your progress:
 
 | Level | Title | XP Required |
 |-------|-------|-------------|
@@ -89,7 +189,7 @@ The security agent includes an XP-based leveling system:
 | 5 | Master | 1500 |
 | 6 | Grandmaster | 3000 |
 
-### XP Awards
+### XP Awards (Fix-Only System)
 
 | Action | XP |
 |--------|-----|
@@ -107,7 +207,7 @@ Before risky operations (auth changes, DB schema, middleware), the agent:
 2. Confirms user permission
 3. Documents rollback plan
 
-## Structure
+## File Structure
 
 ```
 .opencode/
@@ -115,14 +215,39 @@ Before risky operations (auth changes, DB schema, middleware), the agent:
 │   └── security.md          # Security audit agent
 ├── skills/
 │   ├── commit/SKILL.md      # Commit conventions
-│   ├── memories/SKILL.md    # Project conventions
+│   ├── memories/SKILL.md    # Project conventions (EDIT THIS!)
 │   ├── mobile/SKILL.md      # React Native patterns
 │   ├── security/SKILL.md    # Security patterns
 │   └── webapp/SKILL.md      # Web app patterns
 └── security/
-    ├── xp.json              # XP tracking
-    └── knowledge.md         # Accumulated findings
+    ├── xp.json              # XP tracking (auto-updated)
+    └── knowledge.md         # Accumulated findings (auto-updated)
 ```
+
+## Troubleshooting
+
+### OpenCode not finding my skills
+
+- Make sure `.opencode` folder is in your **project root** (same level as `package.json`)
+- Check that skill files are named `SKILL.md` (uppercase)
+
+### Skills not working as expected
+
+- Open the `SKILL.md` file and verify the content
+- Make sure the frontmatter (between `---`) is valid YAML
+
+### Want to reset security XP?
+
+Delete the tracking files and OpenCode will recreate them:
+
+```bash
+rm .opencode/security/xp.json
+rm .opencode/security/knowledge.md
+```
+
+## Contributing
+
+Feel free to submit issues and pull requests to improve these skills and agents.
 
 ## License
 
