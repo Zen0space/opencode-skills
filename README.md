@@ -50,8 +50,6 @@ cp -r opencode-skills/templates/.opencode /path/to/your/project/
 
 ## Verify Installation
 
-Open your project in OpenCode and check that it recognizes the skills:
-
 ```bash
 cd /path/to/your/project
 opencode
@@ -73,7 +71,7 @@ Example output:
 ║        SECURITY AGENT                ║
 ╠══════════════════════════════════════╣
 ║  Level 1 - Novice                    ║
-║  XP: [█████████░░░░░░░] 85/150       ║
+║  XP: [█████████░░░░░░░░] 85/150       ║
 ║  Progress: 57%                       ║
 ║                                      ║
 ║  Stats:                              ║
@@ -82,6 +80,12 @@ Example output:
 ║  * Patterns Added: 1                 ║
 ║  * XP Penalties:  0                  ║
 ╚══════════════════════════════════════╝
+```
+
+## Update Skills
+
+```bash
+npx ocs-stats update
 ```
 
 ## What's Included
@@ -104,7 +108,7 @@ Example output:
 
 ## Customization
 
-### Step 1: Understand Session Memory
+### Understand Session Memory
 
 The `memories` skill tracks your current work session:
 - **Current Focus:** What you're actively working on
@@ -114,13 +118,11 @@ The `memories` skill tracks your current work session:
 
 The agent reads and updates this file automatically. You can also edit it manually.
 
-### Step 2: Update Commit Conventions (Optional)
+### Update Commit Conventions (Optional)
 
 Edit `.opencode/skills/commit/SKILL.md` if you use different commit formats.
 
-### Step 3: Remove What You Don't Need
-
-Delete any skills you don't want:
+### Remove What You Don't Need
 
 ```bash
 # Remove mobile skill if you're not building a mobile app
@@ -129,66 +131,6 @@ rm -rf .opencode/skills/mobile
 # Remove security agent if you don't need security audits
 rm -rf .opencode/agents/security
 rm -rf .opencode/security
-```
-
-## Adding Your Own Skills
-
-Create a new folder in `.opencode/skills/`:
-
-```
-.opencode/
-└── skills/
-    └── my-skill/
-        └── SKILL.md
-```
-
-**SKILL.md template:**
-
-```markdown
----
-name: my-skill
-description: What this skill does
----
-
-# My Skill
-
-## Guidelines
-- Rule 1
-- Rule 2
-
-## Code Examples
-```typescript
-// Example code
-```
-```
-
-## Adding Your Own Agents
-
-Create a new file in `.opencode/agents/`:
-
-```
-.opencode/
-└── agents/
-    └── my-agent.md
-```
-
-**Agent template:**
-
-```markdown
----
-description: Agent description shown in OpenCode
-mode: subagent
-tools:
-  write: true
-  edit: true
-  bash: true
----
-
-You are a [role] agent specialized in [domain].
-
-## Your Task
-- Task 1
-- Task 2
 ```
 
 ## Security Agent Features
@@ -202,7 +144,7 @@ The security agent includes an XP-based leveling system that tracks your progres
 | 3 | Practitioner | 450 |
 | 4 | Expert | 900 |
 | 5 | Master | 1500 |
-| 6 | Grandmaster | 3000 |
+| 6 | Grandmaster | 3,000 |
 
 ### XP Awards (Fix-Only System)
 
@@ -224,8 +166,6 @@ Before risky operations (auth changes, DB schema, middleware), the agent:
 
 ## File Structure
 
-After installation, your project will have:
-
 ```
 .opencode/
 ├── agents/
@@ -243,13 +183,14 @@ After installation, your project will have:
 
 ## For Contributors
 
-This repo doubles as an npm package. Structure:
-
 ```
 opencode-skills/
 ├── package.json             # npm package config
 ├── bin/cli.js               # CLI entry point
-├── src/init.js              # Install logic
+├── src/                     # Source files
+│   ├── init.js
+│   ├── display.js
+│   └── stats.js
 ├── templates/               # Files copied to user projects
 │   ├── agents/
 │   ├── skills/
