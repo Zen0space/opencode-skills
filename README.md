@@ -12,14 +12,26 @@ When you add these files to your project, OpenCode will:
 
 ## Installation
 
-Choose one of the methods below:
+### Method 1: NPX (Recommended)
 
-### Method 1: Download ZIP (Easiest)
+```bash
+cd /path/to/your/project
+npx create-opencode-skills
+```
+
+That's it! The `.opencode` folder will be created in your project.
+
+**Global install** (shared across all projects):
+```bash
+npx create-opencode-skills --global
+```
+
+### Method 2: Download ZIP
 
 1. Click the green **"Code"** button at the top of this page
 2. Select **"Download ZIP"**
 3. Extract the ZIP file
-4. Copy the `.opencode` folder to your project root
+4. Copy the `templates/.opencode` folder to your project root
 
 ```
 your-project/
@@ -29,31 +41,11 @@ your-project/
 └── ...
 ```
 
-### Method 2: Clone & Copy
+### Method 3: Clone & Copy
 
 ```bash
-# Clone this repository
 git clone https://github.com/Zen0space/opencode-skills.git
-
-# Copy to your project (replace /path/to/your/project)
-cp -r opencode-skills/.opencode /path/to/your/project/
-```
-
-### Method 3: Download Single File
-
-If you only want one skill, download just that file:
-
-1. Navigate to the file in GitHub (e.g., `.opencode/skills/commit/SKILL.md`)
-2. Click **"Raw"** button
-3. Right-click → Save as
-4. Create the folder structure in your project and save the file
-
-```
-your-project/
-└── .opencode/
-    └── skills/
-        └── commit/
-            └── SKILL.md   ← Save here
+cp -r opencode-skills/templates/.opencode /path/to/your/project/
 ```
 
 ## Verify Installation
@@ -209,6 +201,8 @@ Before risky operations (auth changes, DB schema, middleware), the agent:
 
 ## File Structure
 
+After installation, your project will have:
+
 ```
 .opencode/
 ├── agents/
@@ -222,6 +216,29 @@ Before risky operations (auth changes, DB schema, middleware), the agent:
 └── security/
     ├── xp.json              # XP tracking (auto-updated)
     └── knowledge.md         # Accumulated findings (auto-updated)
+```
+
+## For Contributors
+
+This repo doubles as an npm package. Structure:
+
+```
+opencode-skills/
+├── package.json             # npm package config
+├── bin/cli.js               # CLI entry point
+├── src/init.js              # Install logic
+├── templates/               # Files copied to user projects
+│   ├── agents/
+│   ├── skills/
+│   └── security/
+├── README.md
+└── LICENSE
+```
+
+**Publishing to npm:**
+```bash
+npm login
+npm publish
 ```
 
 ## Troubleshooting

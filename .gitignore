@@ -14,3 +14,7 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# npm
+*.log
+*.tgz
