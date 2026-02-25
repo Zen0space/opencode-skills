@@ -235,6 +235,29 @@ Which issues would you like me to fix?
 
 ### Fix Phase (After User Confirmation)
 
+After updating XP in `xp.json`, display the XP gain to the user:
+
+```bash
+npx ocs display-xp <amount> "<reason>"
+```
+
+Example:
+```bash
+npx ocs display-xp 35 "Fixed high issue"
+```
+
+This will display:
+```
+╔══════════════════════════════════════╗
+║  +35 XP  Fixed high issue            ║
+╠══════════════════════════════════════╣
+║  Level 1 - Novice                    ║
+║  [█████████░░░░░░░] 85/150           ║
+╚══════════════════════════════════════╝
+```
+
+### Fix Report Format
+
 ```
 ## Fix Report
 
