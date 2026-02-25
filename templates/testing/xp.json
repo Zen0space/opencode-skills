@@ -1,0 +1,60 @@
+{
+  "xp": 0,
+  "level": 1,
+  "title": "Novice",
+  "totalTests": 0,
+  "testsWritten": {
+    "unit": 0,
+    "integration": 0,
+    "e2e": 0
+  },
+  "testsFixed": 0,
+  "patternsAdded": 0,
+  "completedSuites": [],
+  "seenPatterns": [],
+  "mistakes": {
+    "flakyTests": 0,
+    "repeatedMistakes": 0,
+    "totalPenaltyXP": 0
+  },
+  "mistakeHistory": [],
+  "levelHistory": [
+    {
+      "level": 1,
+      "title": "Novice",
+      "xpRequired": 0,
+      "unlockedAt": null
+    }
+  ],
+  "xpTable": {
+    "tests": {
+      "unit": 10,
+      "integration": 15,
+      "e2e": 20
+    },
+    "fixes": {
+      "brokenTest": 10,
+      "flakyTest": 15
+    },
+    "knowledge": {
+      "addPattern": 30,
+      "documentPattern": 20
+    },
+    "completion": {
+      "singleFile": 20,
+      "package": 100
+    },
+    "penalty": {
+      "introduceFlaky": -25,
+      "repeatMistake": -15
+    }
+  },
+  "levelThresholds": [
+    { "level": 1, "title": "Novice", "xpRequired": 0, "focus": "Basic unit tests" },
+    { "level": 2, "title": "Apprentice", "xpRequired": 100, "focus": "Integration tests" },
+    { "level": 3, "title": "Practitioner", "xpRequired": 300, "focus": "E2E tests" },
+    { "level": 4, "title": "Expert", "xpRequired": 600, "focus": "Test patterns & mocking" },
+    { "level": 5, "title": "Master", "xpRequired": 1200, "focus": "Full coverage strategies" },
+    { "level": 6, "title": "Grandmaster", "xpRequired": 2500, "focus": "Testing excellence" }
+  ]
+}

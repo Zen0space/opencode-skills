@@ -44,7 +44,7 @@ function emptyLine() {
   return '║' + ' '.repeat(CONTENT_WIDTH) + '║';
 }
 
-export function showXpGain(amount, reason, data) {
+export function showXpGain(amount, reason, data, category = 'security') {
   const { xp, level, title } = data;
   const nextLevelXp = getNextLevelXp(level);
   
@@ -69,20 +69,21 @@ export function showXpGain(amount, reason, data) {
   console.log('');
 }
 
-export function showStats(data) {
-  const { xp, level, title, issuesFixed, totalAudits, patternsAdded, mistakes } = data;
+export function showStats(data, category = 'security') {
+  const { xp, level, title, issuesFixed, totalAudits, patternsAdded, mistakes, testsWritten, testsFixed, totalTests } = data;
   const nextLevelXp = getNextLevelXp(level);
   
-  const totalFixed = (issuesFixed?.critical || 0) + 
-                     (issuesFixed?.high || 0) + 
-                     (issuesFixed?.medium || 0) + 
-                     (issuesFixed?.low || 0);
+  const categoryTitle = category === 'testing' ? 'TESTING AGENT' : 'SECURITY AGENT';
+  
+  const totalFixed = category === 'security' 
+    ? ((issuesFixed?.critical || 0) + (issuesFixed?.high || 0) + (issuesFixed?.medium || 0) + (issuesFixed?.low || 0))
+    : (testsFixed || 0);
   
   const totalPenalty = mistakes?.totalPenaltyXP || 0;
   
   console.log('');
   console.log(topBorder());
-  console.log(line('        SECURITY AGENT'));
+  console.log(line(`        ${categoryTitle}`));
   console.log(divider());
   console.log(line(`  Level ${level} - ${title}`));
   
@@ -98,10 +99,21 @@ export function showStats(data) {
   
   console.log(emptyLine());
   console.log(line('  Stats:'));
-  console.log(line(`  * Issues Fixed:  ${totalFixed}`));
-  console.log(line(`  * Audits Done:   ${totalAudits || 0}`));
-  console.log(line(`  * Patterns Added: ${patternsAdded || 0}`));
-  console.log(line(`  * XP Penalties:  ${totalPenalty}`));
+  
+  if (category === 'testing') {
+    console.log(line(`  * Tests Written:   ${totalTests || 0}`));
+    console.log(line(`  * Unit Tests:      ${testsWritten?.unit || 0}`));
+    console.log(line(`  * Integration:     ${testsWritten?.integration || 0}`));
+    console.log(line(`  * E2E Tests:       ${testsWritten?.e2e || 0}`));
+    console.log(line(`  * Tests Fixed:     ${testsFixed || 0}`));
+    console.log(line(`  * Patterns Added:  ${patternsAdded || 0}`));
+  } else {
+    console.log(line(`  * Issues Fixed:    ${totalFixed}`));
+    console.log(line(`  * Audits Done:     ${totalAudits || 0}`));
+    console.log(line(`  * Patterns Added:  ${patternsAdded || 0}`));
+  }
+  
+  console.log(line(`  * XP Penalties:    ${totalPenalty}`));
   console.log(bottomBorder());
   console.log('');
 }

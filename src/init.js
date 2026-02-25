@@ -30,9 +30,10 @@ export async function init({ isGlobal = false } = {}) {
 
   console.log('Installed successfully!\n');
   console.log('What was installed:');
-  console.log('  * Agents: security');
-  console.log('  * Skills: commit, memories, mobile, security, webapp');
-  console.log('  * Security: XP tracking, knowledge base\n');
+  console.log('  * Agents: security, testing');
+  console.log('  * Skills: commit, memories, mobile, security, testing, webapp');
+  console.log('  * Security: XP tracking, knowledge base');
+  console.log('  * Testing: XP tracking, knowledge base\n');
   
   if (!isGlobal) {
     console.log('Next steps:');
@@ -64,9 +65,10 @@ export async function update({ isGlobal = false } = {}) {
 
   console.log('Updated successfully!\n');
   console.log('What was installed:');
-  console.log('  * Agents: security');
-  console.log('  * Skills: commit, memories, mobile, security, webapp');
-  console.log('  * Security: XP tracking, knowledge base\n');
+  console.log('  * Agents: security, testing');
+  console.log('  * Skills: commit, memories, mobile, security, testing, webapp');
+  console.log('  * Security: XP tracking, knowledge base');
+  console.log('  * Testing: XP tracking, knowledge base\n');
 }
 
 function copyDir(src, dest) {

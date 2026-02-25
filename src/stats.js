@@ -2,8 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { showStats, showXpGain } from './display.js';
 
-function findXpJson() {
-  const cwdPath = path.join(process.cwd(), '.opencode', 'security', 'xp.json');
+function findXpJson(category = 'security') {
+  const cwdPath = path.join(process.cwd(), '.opencode', category, 'xp.json');
   
   if (fs.existsSync(cwdPath)) {
     return cwdPath;
@@ -12,12 +12,12 @@ function findXpJson() {
   return null;
 }
 
-export function stats() {
-  const xpPath = findXpJson();
+export function stats(category = 'security') {
+  const xpPath = findXpJson(category);
   
   if (!xpPath) {
     console.log('');
-    console.log('  No .opencode/security/xp.json found in this project.');
+    console.log(`  No .opencode/${category}/xp.json found in this project.`);
     console.log('');
     console.log('  Make sure you\'re in a project with opencode-skills installed.');
     console.log('  Run: npx create-opencode-skills');
@@ -26,11 +26,11 @@ export function stats() {
   }
   
   const data = JSON.parse(fs.readFileSync(xpPath, 'utf-8'));
-  showStats(data);
+  showStats(data, category);
 }
 
-export function displayXp(amount, reason) {
-  const xpPath = findXpJson();
+export function displayXp(amount, reason, category = 'security') {
+  const xpPath = findXpJson(category);
   
   if (!xpPath) {
     console.log('No xp.json found');
@@ -44,5 +44,5 @@ export function displayXp(amount, reason) {
   
   const data = JSON.parse(fs.readFileSync(xpPath, 'utf-8'));
   const reasonText = reason || 'XP earned';
-  showXpGain(parseInt(amount, 10), reasonText, data);
+  showXpGain(parseInt(amount, 10), reasonText, data, category);
 }

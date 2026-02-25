@@ -59,10 +59,14 @@ OpenCode automatically loads any `.opencode` folder in your project root.
 
 ## Check Your Progress
 
-Use the `stats` command to view your security agent's progress:
+Use the `stats` command to view your agent progress:
 
 ```bash
+# Security agent
 npx ocs-stats stats
+
+# Testing agent
+npx ocs-stats stats testing
 ```
 
 Example output:
@@ -95,6 +99,7 @@ npx ocs-stats update
 | Agent | Description |
 |-------|-------------|
 | `security` | Security expert with XP-based leveling system for auditing and fixing vulnerabilities |
+| `testing` | Testing expert for unit, integration, and E2E tests with Playwright integration |
 
 ### Skills
 
@@ -104,6 +109,7 @@ npx ocs-stats update
 | `memories` | Session memory for tracking work context and pending tasks |
 | `mobile` | Mobile development (React Native, Flutter, Swift) |
 | `security` | Security patterns, auth approach, and anti-patterns |
+| `testing` | Testing patterns (Vitest, Jest, React Testing Library, Playwright) |
 | `webapp` | Web development (React, Vue, Svelte, Angular) |
 
 ## Customization
@@ -143,7 +149,7 @@ The security agent includes an XP-based leveling system that tracks your progres
 | 2 | Apprentice | 150 |
 | 3 | Practitioner | 450 |
 | 4 | Expert | 900 |
-| 5 | Master | 1500 |
+| 5 | Master | 1,500 |
 | 6 | Grandmaster | 3,000 |
 
 ### XP Awards (Fix-Only System)
@@ -164,21 +170,58 @@ Before risky operations (auth changes, DB schema, middleware), the agent:
 2. Confirms user permission
 3. Documents rollback plan
 
+## Testing Agent Features
+
+The testing agent helps you write tests with an XP-based leveling system:
+
+| Level | Title | XP Required | Focus |
+|-------|-------|-------------|-------|
+| 1 | Novice | 0 | Basic unit tests |
+| 2 | Apprentice | 100 | Integration tests |
+| 3 | Practitioner | 300 | E2E tests |
+| 4 | Expert | 600 | Test patterns & mocking |
+| 5 | Master | 1,200 | Full coverage strategies |
+| 6 | Grandmaster | 2,500 | Testing excellence |
+
+### XP Awards
+
+| Action | XP |
+|--------|-----|
+| Write unit test | +10 XP |
+| Write integration test | +15 XP |
+| Write E2E test | +20 XP |
+| Fix broken test | +10 XP |
+| Add test pattern | +30 XP |
+| Complete package test suite | +100 XP |
+
+### Playwright Integration
+
+When you need E2E testing:
+1. The testing agent checks for Playwright MCP
+2. If not configured, prompts you to enable it
+3. Creates `opencode.json` with Playwright MCP config
+4. Installs `@playwright/test` and browser binaries
+
 ## File Structure
 
 ```
 .opencode/
 ├── agents/
-│   └── security.md          # Security audit agent
+│   ├── security.md          # Security audit agent
+│   └── testing.md           # Testing agent
 ├── skills/
 │   ├── commit/SKILL.md      # Commit conventions
 │   ├── memories/SKILL.md    # Session memory (auto-updated)
 │   ├── mobile/SKILL.md      # Mobile patterns (RN, Flutter, Swift)
 │   ├── security/SKILL.md    # Security patterns
+│   ├── testing/SKILL.md     # Testing patterns
 │   └── webapp/SKILL.md      # Web patterns (React, Vue, Svelte, Angular)
-└── security/
-    ├── xp.json              # XP tracking (auto-updated)
-    └── knowledge.md         # Accumulated findings (auto-updated)
+├── security/
+│   ├── xp.json              # XP tracking (auto-updated)
+│   └── knowledge.md         # Accumulated findings (auto-updated)
+└── testing/
+    ├── xp.json              # Testing XP tracking (auto-updated)
+    └── knowledge.md         # Testing patterns & lessons (auto-updated)
 ```
 
 ## For Contributors
@@ -193,8 +236,11 @@ opencode-skills/
 │   └── stats.js
 ├── templates/               # Files copied to user projects
 │   ├── agents/
+│   │   ├── security.md
+│   │   └── testing.md
 │   ├── skills/
-│   └── security/
+│   ├── security/
+│   └── testing/
 ├── README.md
 └── LICENSE
 ```
@@ -224,6 +270,13 @@ Delete the tracking files and OpenCode will recreate them:
 ```bash
 rm .opencode/security/xp.json
 rm .opencode/security/knowledge.md
+```
+
+### Want to reset testing XP?
+
+```bash
+rm .opencode/testing/xp.json
+rm .opencode/testing/knowledge.md
 ```
 
 ## Contributing

@@ -17,6 +17,7 @@ Usage:
   npx ocs-stats --global     Install globally (~/.opencode)
   npx ocs-stats update       Update skills (removes existing)
   npx ocs-stats stats        Show security agent progress
+  npx ocs-stats stats testing   Show testing agent progress
   npx ocs-stats display-xp <amount> "<reason>"
                                           Display XP gain (used by agent)
 
@@ -28,7 +29,9 @@ Examples:
   npx ocs-stats
   npx ocs-stats update
   npx ocs-stats stats
+  npx ocs-stats stats testing
   npx ocs-stats display-xp 35 "Fixed high issue"
+  npx ocs-stats display-xp 80 "Wrote 8 unit tests [testing]"
 `);
   process.exit(0);
 }
@@ -42,14 +45,17 @@ if (command === 'update') {
 }
 
 if (command === 'stats') {
-  stats();
+  const category = args[1] || 'security';
+  stats(category);
   process.exit(0);
 }
 
 if (command === 'display-xp') {
   const amount = args[1];
-  const reason = args[2];
-  displayXp(amount, reason);
+  const reason = args.slice(2).join(' ') || 'XP earned';
+  const category = reason.includes('[testing]') ? 'testing' : 'security';
+  const cleanReason = reason.replace(/\[testing\]/g, '').trim();
+  displayXp(amount, cleanReason, category);
   process.exit(0);
 }
 
