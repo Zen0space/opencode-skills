@@ -177,11 +177,11 @@ The testing agent helps you write tests with an XP-based leveling system:
 | Level | Title | XP Required | Focus |
 |-------|-------|-------------|-------|
 | 1 | Novice | 0 | Basic unit tests |
-| 2 | Apprentice | 100 | Integration tests |
-| 3 | Practitioner | 300 | E2E tests |
-| 4 | Expert | 600 | Test patterns & mocking |
-| 5 | Master | 1,200 | Full coverage strategies |
-| 6 | Grandmaster | 2,500 | Testing excellence |
+| 2 | Apprentice | 150 | Integration tests |
+| 3 | Practitioner | 450 | E2E tests |
+| 4 | Expert | 900 | Test patterns & mocking |
+| 5 | Master | 1,500 | Full coverage strategies |
+| 6 | Grandmaster | 3,000 | Testing excellence |
 
 ### XP Awards
 

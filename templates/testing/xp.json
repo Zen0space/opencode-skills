@@ -51,10 +51,10 @@
   },
   "levelThresholds": [
     { "level": 1, "title": "Novice", "xpRequired": 0, "focus": "Basic unit tests" },
-    { "level": 2, "title": "Apprentice", "xpRequired": 100, "focus": "Integration tests" },
-    { "level": 3, "title": "Practitioner", "xpRequired": 300, "focus": "E2E tests" },
-    { "level": 4, "title": "Expert", "xpRequired": 600, "focus": "Test patterns & mocking" },
-    { "level": 5, "title": "Master", "xpRequired": 1200, "focus": "Full coverage strategies" },
-    { "level": 6, "title": "Grandmaster", "xpRequired": 2500, "focus": "Testing excellence" }
+    { "level": 2, "title": "Apprentice", "xpRequired": 150, "focus": "Integration tests" },
+    { "level": 3, "title": "Practitioner", "xpRequired": 450, "focus": "E2E tests" },
+    { "level": 4, "title": "Expert", "xpRequired": 900, "focus": "Test patterns & mocking" },
+    { "level": 5, "title": "Master", "xpRequired": 1500, "focus": "Full coverage strategies" },
+    { "level": 6, "title": "Grandmaster", "xpRequired": 3000, "focus": "Testing excellence" }
   ]
 }

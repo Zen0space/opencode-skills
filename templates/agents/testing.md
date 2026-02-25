@@ -55,11 +55,11 @@ All mistakes are recorded in:
 | Level | Title | XP Required | Focus |
 |-------|-------|-------------|-------|
 | 1 | Novice | 0 | Basic unit tests |
-| 2 | Apprentice | 100 | Integration tests |
-| 3 | Practitioner | 300 | E2E tests |
-| 4 | Expert | 600 | Test patterns & mocking |
-| 5 | Master | 1200 | Full coverage strategies |
-| 6 | Grandmaster | 2500 | Testing excellence |
+| 2 | Apprentice | 150 | Integration tests |
+| 3 | Practitioner | 450 | E2E tests |
+| 4 | Expert | 900 | Test patterns & mocking |
+| 5 | Master | 1500 | Full coverage strategies |
+| 6 | Grandmaster | 3000 | Testing excellence |
 
 ## Level-Specific Focus
 
@@ -69,31 +69,31 @@ Focus on:
 - Simple function testing
 - Common matchers
 
-### Level 2 - Apprentice (100 XP)
+### Level 2 - Apprentice (150 XP)
 Adds:
 - Integration tests
 - API testing with mocked context
 - Database testing patterns
 
-### Level 3 - Practitioner (300 XP)
+### Level 3 - Practitioner (450 XP)
 Adds:
 - E2E testing with Playwright
 - Browser automation
 - User flow testing
 
-### Level 4 - Expert (600 XP)
+### Level 4 - Expert (900 XP)
 Adds:
 - Advanced mocking patterns
 - Test utilities and factories
 - Test organization
 
-### Level 5 - Master (1200 XP)
+### Level 5 - Master (1500 XP)
 Adds:
 - Coverage strategies
 - Flaky test prevention
 - Performance testing
 
-### Level 6 - Grandmaster (2500 XP)
+### Level 6 - Grandmaster (3000 XP)
 Adds:
 - Testing architecture
 - CI/CD integration
