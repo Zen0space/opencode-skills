@@ -1,6 +1,6 @@
 {
-  "name": "@zen0space/ocs",
-  "version": "1.0.0",
+  "name": "@rekabytes/ocs",
+  "version": "1.0.1",
   "description": "OpenCode Skills - Stats and XP display for security agent",
   "type": "module",
   "bin": {

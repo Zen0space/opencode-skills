@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-import { init } from '../src/init.js';
-import { stats, displayXp } from '../src/stats.js';
+import { init, update } from '../src/init.js';
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -15,9 +14,7 @@ create-opencode-skills - Install OpenCode skills and agents
 Usage:
   npx create-opencode-skills              Install to current project
   npx create-opencode-skills --global     Install globally (~/.opencode)
-  npx create-opencode-skills stats        Show XP, level, and progress
-  npx create-opencode-skills display-xp <amount> "<reason>"
-                                          Display XP gain (used by agent)
+  npx create-opencode-skills update       Update skills (removes existing)
 
 Options:
   -g, --global    Install to user home directory
@@ -26,21 +23,16 @@ Options:
 Examples:
   cd my-project && npx create-opencode-skills
   npx create-opencode-skills --global
-  npx create-opencode-skills stats
-  npx create-opencode-skills display-xp 35 "Fixed high issue"
+  npx create-opencode-skills update
 `);
   process.exit(0);
 }
 
-if (command === 'stats') {
-  stats();
-  process.exit(0);
-}
-
-if (command === 'display-xp') {
-  const amount = args[1];
-  const reason = args[2];
-  displayXp(amount, reason);
+if (command === 'update') {
+  update({ isGlobal }).catch((err) => {
+    console.error('Error:', err.message);
+    process.exit(1);
+  });
   process.exit(0);
 }
 

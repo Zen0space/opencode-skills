@@ -9,20 +9,20 @@ const isHelp = args.includes('--help') || args.includes('-h');
 
 if (isHelp || !command) {
   console.log(`
-@zen0space/ocs - OpenCode Skills stats
+@rekabytes/ocs - OpenCode Skills stats
 
 Usage:
-  npx @zen0space/ocs security stats
+  npx @rekabytes/ocs security stats
                              Show security agent XP, level, and progress
-  npx @zen0space/ocs security display-xp <amount> "<reason>"
+  npx @rekabytes/ocs security display-xp <amount> "<reason>"
                              Display XP gain (used by agent)
 
 Options:
   -h, --help      Show this help message
 
 Examples:
-  npx @zen0space/ocs security stats
-  npx @zen0space/ocs security display-xp 35 "Fixed high issue"
+  npx @rekabytes/ocs security stats
+  npx @rekabytes/ocs security display-xp 35 "Fixed high issue"
 `);
   process.exit(0);
 }

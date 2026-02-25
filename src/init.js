@@ -17,9 +17,8 @@ export async function init({ isGlobal = false } = {}) {
   console.log(`\nInstalling OpenCode skills to: ${targetDir}\n`);
 
   if (fs.existsSync(targetDir)) {
-    console.log('⚠️  .opencode folder already exists.');
-    console.log('   Remove it first if you want a fresh install, or it will be preserved.\n');
-    console.log('   To overwrite: rm -rf .opencode && npx create-opencode-skills\n');
+    console.log('.opencode folder already exists.');
+    console.log('   To update: npx create-opencode-skills update\n');
     process.exit(0);
   }
 
@@ -29,17 +28,45 @@ export async function init({ isGlobal = false } = {}) {
 
   copyDir(TEMPLATES_DIR, targetDir);
 
-  console.log('✅ Installed successfully!\n');
+  console.log('Installed successfully!\n');
   console.log('What was installed:');
-  console.log('  • Agents: security');
-  console.log('  • Skills: commit, memories, mobile, security, webapp');
-  console.log('  • Security: XP tracking, knowledge base\n');
+  console.log('  * Agents: security');
+  console.log('  * Skills: commit, memories, mobile, security, webapp');
+  console.log('  * Security: XP tracking, knowledge base\n');
   
   if (!isGlobal) {
     console.log('Next steps:');
     console.log('  1. Edit .opencode/skills/memories/SKILL.md to match your project');
     console.log('  2. Run `opencode` in this directory to start using the skills\n');
+    console.log('Check progress: npx @rekabytes/ocs security stats\n');
   }
+}
+
+export async function update({ isGlobal = false } = {}) {
+  const targetDir = isGlobal 
+    ? path.join(process.env.HOME || process.env.USERPROFILE, '.opencode')
+    : path.join(process.cwd(), '.opencode');
+
+  console.log(`\nUpdating OpenCode skills at: ${targetDir}\n`);
+
+  if (!fs.existsSync(targetDir)) {
+    console.log('.opencode folder not found. Run `npx create-opencode-skills` first.\n');
+    process.exit(1);
+  }
+
+  // Remove existing
+  fs.rmSync(targetDir, { recursive: true, force: true });
+  console.log('  Removed existing .opencode folder');
+
+  // Reinstall
+  copyDir(TEMPLATES_DIR, targetDir);
+  console.log('  Installed fresh copy\n');
+
+  console.log('Updated successfully!\n');
+  console.log('What was installed:');
+  console.log('  * Agents: security');
+  console.log('  * Skills: commit, memories, mobile, security, webapp');
+  console.log('  * Security: XP tracking, knowledge base\n');
 }
 
 function copyDir(src, dest) {
