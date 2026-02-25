@@ -1,10 +1,10 @@
 {
-  "name": "create-opencode-skills",
-  "version": "1.0.4",
-  "description": "One-click installer for OpenCode skills and agents",
+  "name": "ocs-stats",
+  "version": "1.0.0",
+  "description": "One-click installer for OpenCode skills and agents with gamified XP stats",
   "type": "module",
   "bin": {
-    "create-opencode-skills": "./bin/cli.js"
+    "ocs-stats": "./bin/cli.js"
   },
   "files": [
     "bin",
@@ -16,7 +16,8 @@
     "ai",
     "skills",
     "agents",
-    "cli"
+    "cli",
+    "stats"
   ],
   "author": "Zen0space",
   "license": "MIT",
@@ -31,4 +32,5 @@
   "engines": {
     "node": ">=18"
   }
+}
 }

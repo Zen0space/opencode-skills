@@ -16,14 +16,14 @@ When you add these files to your project, OpenCode will:
 
 ```bash
 cd /path/to/your/project
-npx create-opencode-skills
+npx ocs-stats
 ```
 
 That's it! The `.opencode` folder will be created in your project.
 
 **Global install** (shared across all projects):
 ```bash
-npx create-opencode-skills --global
+npx ocs-stats --global
 ```
 
 ### Method 2: Download ZIP
@@ -61,10 +61,10 @@ OpenCode automatically loads any `.opencode` folder in your project root.
 
 ## Check Your Progress
 
-Use the `@rekabytes/ocs` command to view your security agent's progress:
+Use the `stats` command to view your security agent's progress:
 
 ```bash
-npx @rekabytes/ocs security stats
+npx ocs-stats stats
 ```
 
 Example output:

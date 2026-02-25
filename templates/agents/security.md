@@ -238,12 +238,27 @@ Which issues would you like me to fix?
 After updating XP in `xp.json`, display the XP gain to the user:
 
 ```bash
-npx @rekabytes/ocs security display-xp <amount> "<reason>"
+npx ocs-stats display-xp <amount> "<reason>"
 ```
 
 Example:
 ```bash
-npx @rekabytes/ocs security display-xp 35 "Fixed high issue"
+npx ocs-stats display-xp 35 "Fixed high issue"
+```
+
+This will display:
+```
+╔══════════════════════════════════════╗
+║  +35 XP  Fixed high issue            ║
+╠══════════════════════════════════════╣
+║  Level 1 - Novice                    ║
+║  [█████████░░░░░░░░] 85/150           ║
+╚══════════════════════════════════════╝
+```
+
+Example:
+```bash
+npx ocs-stats display-xp 35 "Fixed high issue"
 ```
 
 This will display:

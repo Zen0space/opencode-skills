@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { init, update } from '../src/init.js';
+import { stats, displayXp } from '../src/stats.js';
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -9,21 +10,25 @@ const isHelp = args.includes('--help') || args.includes('-h');
 
 if (isHelp) {
   console.log(`
-create-opencode-skills - Install OpenCode skills and agents
+ocs-stats - Install OpenCode skills and agents
 
 Usage:
-  npx create-opencode-skills              Install to current project
-  npx create-opencode-skills --global     Install globally (~/.opencode)
-  npx create-opencode-skills update       Update skills (removes existing)
+  npx ocs-stats              Install to current project
+  npx ocs-stats --global     Install globally (~/.opencode)
+  npx ocs-stats update       Update skills (removes existing)
+  npx ocs-stats stats        Show security agent progress
+  npx ocs-stats display-xp <amount> "<reason>"
+                                          Display XP gain (used by agent)
 
 Options:
   -g, --global    Install to user home directory
   -h, --help      Show this help message
 
 Examples:
-  cd my-project && npx create-opencode-skills
-  npx create-opencode-skills --global
-  npx create-opencode-skills update
+  npx ocs-stats
+  npx ocs-stats update
+  npx ocs-stats stats
+  npx ocs-stats display-xp 35 "Fixed high issue"
 `);
   process.exit(0);
 }
@@ -33,6 +38,18 @@ if (command === 'update') {
     console.error('Error:', err.message);
     process.exit(1);
   });
+  process.exit(0);
+}
+
+if (command === 'stats') {
+  stats();
+  process.exit(0);
+}
+
+if (command === 'display-xp') {
+  const amount = args[1];
+  const reason = args[2];
+  displayXp(amount, reason);
   process.exit(0);
 }
 

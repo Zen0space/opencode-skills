@@ -18,7 +18,7 @@ export async function init({ isGlobal = false } = {}) {
 
   if (fs.existsSync(targetDir)) {
     console.log('.opencode folder already exists.');
-    console.log('   To update: npx create-opencode-skills update\n');
+    console.log('   To update: npx ocs-stats update\n');
     process.exit(0);
   }
 
@@ -38,7 +38,7 @@ export async function init({ isGlobal = false } = {}) {
     console.log('Next steps:');
     console.log('  1. Edit .opencode/skills/memories/SKILL.md to match your project');
     console.log('  2. Run `opencode` in this directory to start using the skills\n');
-    console.log('Check progress: npx @rekabytes/ocs security stats\n');
+    console.log('Check progress: npx ocs-stats stats\n');
   }
 }
 
@@ -50,7 +50,7 @@ export async function update({ isGlobal = false } = {}) {
   console.log(`\nUpdating OpenCode skills at: ${targetDir}\n`);
 
   if (!fs.existsSync(targetDir)) {
-    console.log('.opencode folder not found. Run `npx create-opencode-skills` first.\n');
+    console.log('.opencode folder not found. Run `npx ocs-stats` first.\n');
     process.exit(1);
   }
 
