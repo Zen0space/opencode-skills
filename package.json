@@ -1,6 +1,6 @@
 {
   "name": "create-opencode-skills",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "One-click installer for OpenCode skills and agents",
   "type": "module",
   "bin": {

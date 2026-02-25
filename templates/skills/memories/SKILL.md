@@ -1,70 +1,69 @@
 ---
 name: memories
-description: Agent memory for project-specific coding preferences, conventions, and patterns
+description: Session memory for tracking latest work and context
 ---
 
-# Project Memories
+# Session Memory
 
-This file stores project-specific coding preferences and conventions for consistency. Based on industry standards for tRPC + Express + Prisma + TypeScript stack.
+This file tracks recent work and context for continuity across sessions. The agent reads this at the start of each session and updates it as work progresses.
 
-## Project Info
-- Framework: Express + tRPC v11
-- Language: TypeScript 5 (strict mode)
-- Database: PostgreSQL with Prisma 7
-- Validation: Zod 4
-- Cache: Redis (ioredis)
-- Linting: typescript-eslint
-- Package Manager: npm/pnpm
+## Current Focus
 
-## Project Structure
-```
-src/
-├── config/          # Environment & constants
-├── lib/            # DB, Redis, cache utilities
-├── routers/        # tRPC routers (1 file per router)
-├── trpc.ts         # tRPC initialization
-└── index.ts       # Express entry point
-```
+**Active Task:** _None_
+**Started:** _Not started_
+**Status:** _Idle_
 
-## Coding Conventions
-- File naming: lowercase kebab-case (users.ts, matchHistory.ts)
-- Router exports: `export const {name}Router = router({...})`
-- Export type: `export type {name}Router = typeof {name}Router`
-- JSDoc for public procedures
-- Console logging: `[Context] message` format
+## Recent Work
 
-## tRPC Patterns
-- Always use `.input(z.object({...}))` for validation
-- Add descriptive error messages: `.min(1, "Username is required")`
-- Use `publicProcedure` for public, `protectedProcedure` for auth
-- Access DB via `ctx.prisma`
-- Return clean data, let tRPC handle serialization
-- Use superjson for data transformation
-- Split large routers into sub-routers
+| Date | What Was Done | Files Changed |
+|------|---------------|---------------|
+| _No entries yet_ | - | - |
 
-## Prisma Patterns
-- Use singleton pattern for PrismaClient (lib/db.ts)
-- Always validate input before DB queries
-- Use `include`/`select` for efficient queries
-- Use indexes for frequently queried fields
-- Handle null/undefined explicitly in queries
+## Pending Tasks
 
-## Error Handling
-- Throw errors directly - tRPC handles HTTP status
-- Use descriptive Zod error messages
-- Log context: `[Feature] action - details`
-- Use TRPCError for tRPC-specific errors
+- _No pending tasks_
 
-## Patterns to Avoid
-- ❌ Don't export router implementations to client (only types)
-- ❌ Don't skip input validation
-- ❌ Don't use `any` - use `unknown` and narrow
-- ❌ Don't use console.error for normal flow
-- ❌ Don't forget to handle null/undefined in queries
-- ❌ Don't use REST-style controllers (use tRPC procedures)
+## Context Notes
 
-## API Design
-- Query vs Mutation: Use query for read-only, mutation for writes
-- Naming: verbNoun for actions (getUser, createPost, updateProfile)
-- Pagination: Use cursor-based for large datasets
-- Response: Return meaningful data, avoid wrapping in generic objects
+Important context to remember across sessions:
+
+### Decisions Made
+_Why certain approaches were chosen_
+
+### Gotchas Discovered
+_Unexpected behaviors or edge cases found_
+
+### Dependencies
+_External services, APIs, or packages to consider_
+
+## Known Issues
+
+| Issue | Description | Status | Workaround |
+|-------|-------------|--------|------------|
+| _None yet_ | - | - | - |
+
+---
+
+## How This Works
+
+### For the Agent
+
+1. **Start of session:** Read this file to understand current context
+2. **Starting work:** Update "Current Focus" with what you're working on
+3. **Completing work:** Add entry to "Recent Work" table
+4. **Ending session:** Update status, add any pending tasks
+5. **Discovering issues:** Add to "Known Issues" or "Context Notes"
+
+### For the User
+
+- Feel free to edit any section manually
+- Add pending tasks you want the agent to work on
+- Update context notes with important information
+- Clear old entries when no longer relevant
+
+### Format Guidelines
+
+- **Recent Work:** Keep last 10-15 entries, archive older ones
+- **Pending Tasks:** Use checkboxes `- [ ]` for tracking
+- **Known Issues:** Include status (Open, Investigating, Fixed)
+- **Dates:** Use YYYY-MM-DD format

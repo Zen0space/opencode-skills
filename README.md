@@ -72,24 +72,22 @@ OpenCode automatically loads any `.opencode/` folder in your project root.
 | Skill | Description |
 |-------|-------------|
 | `commit` | Commit message conventions (type(scope): description format) |
-| `memories` | Project-specific coding preferences and conventions |
-| `mobile` | React Native & Expo development patterns |
+| `memories` | Session memory for tracking work context and pending tasks |
+| `mobile` | Mobile development (React Native, Flutter, Swift) |
 | `security` | Security patterns, auth approach, and anti-patterns |
-| `webapp` | React, TypeScript, and Next.js patterns |
+| `webapp` | Web development (React, Vue, Svelte, Angular) |
 
 ## Customization
 
-### Step 1: Update Project Conventions
+### Step 1: Understand Session Memory
 
-Edit `.opencode/skills/memories/SKILL.md` to match your project:
+The `memories` skill tracks your current work session:
+- **Current Focus:** What you're actively working on
+- **Recent Work:** Last changes made
+- **Pending Tasks:** TODOs to complete
+- **Context Notes:** Important decisions and gotchas
 
-```markdown
-## Project Info
-- Framework: Express        # Change to your framework
-- Language: TypeScript 5   # Change to your language
-- Database: PostgreSQL     # Change to your database
-- Validation: Zod          # Change to your validation library
-```
+The agent reads and updates this file automatically. You can also edit it manually.
 
 ### Step 2: Update Commit Conventions (Optional)
 
@@ -209,10 +207,10 @@ After installation, your project will have:
 │   └── security.md          # Security audit agent
 ├── skills/
 │   ├── commit/SKILL.md      # Commit conventions
-│   ├── memories/SKILL.md    # Project conventions (EDIT THIS!)
-│   ├── mobile/SKILL.md      # React Native patterns
+│   ├── memories/SKILL.md    # Session memory (auto-updated)
+│   ├── mobile/SKILL.md      # Mobile patterns (RN, Flutter, Swift)
 │   ├── security/SKILL.md    # Security patterns
-│   └── webapp/SKILL.md      # Web app patterns
+│   └── webapp/SKILL.md      # Web patterns (React, Vue, Svelte, Angular)
 └── security/
     ├── xp.json              # XP tracking (auto-updated)
     └── knowledge.md         # Accumulated findings (auto-updated)
