@@ -235,13 +235,23 @@ function getAllTemplateFiles(srcDir, baseDir = '') {
   return files;
 }
 
+function getVersion(filePath) {
+  if (!fs.existsSync(filePath)) return '0.0.0';
+  const content = fs.readFileSync(filePath, 'utf-8').trim();
+  const firstLine = content.split('\n')[0];
+  return firstLine.split(':')[0].trim();
+}
+
+function getChangelog(filePath) {
+  if (!fs.existsSync(filePath)) return '';
+  return fs.readFileSync(filePath, 'utf-8').trim();
+}
+
 export async function checkForUpdates(targetDir) {
   const versionFile = path.join(targetDir, '.ocs-version');
-  const currentVersion = fs.existsSync(versionFile) 
-    ? fs.readFileSync(versionFile, 'utf-8').trim()
-    : '0.0.0';
+  const currentVersion = getVersion(versionFile);
   
-  const templateVersion = fs.readFileSync(path.join(TEMPLATES_DIR, '.ocs-version'), 'utf-8').trim();
+  const templateVersion = getVersion(path.join(TEMPLATES_DIR, '.ocs-version'));
   
   const comparison = compareVersion(templateVersion, currentVersion);
   
@@ -295,11 +305,8 @@ export async function performUpdate(targetDir, options = {}) {
   const { force = false, checkOnly = false } = options;
   
   const versionFile = path.join(targetDir, '.ocs-version');
-  const currentVersion = fs.existsSync(versionFile) 
-    ? fs.readFileSync(versionFile, 'utf-8').trim()
-    : '0.0.0';
-  
-  const templateVersion = fs.readFileSync(path.join(TEMPLATES_DIR, '.ocs-version'), 'utf-8').trim();
+  const currentVersion = getVersion(versionFile);
+  const templateVersion = getVersion(path.join(TEMPLATES_DIR, '.ocs-version'));
   
   if (compareVersion(templateVersion, currentVersion) <= 0 && !force) {
     console.log(`  Already up to date (v${currentVersion})\n`);

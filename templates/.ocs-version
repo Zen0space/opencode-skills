@@ -1,1 +1,4 @@
-1.1.4
+1.1.6: Smart merge - preserves XP, level, memories; updates template fields
+1.1.5: Git-like update - version tracking, --check/--force flags
+1.1.4: Testing agent - XP system, Playwright integration
+1.1.0: Initial release
