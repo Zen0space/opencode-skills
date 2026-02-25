@@ -1,7 +1,7 @@
 {
   "name": "ocs-stats",
   "version": "1.0.0",
-  "description": "One-click installer for OpenCode skills and agents with gamified XP stats",
+  "description": "OpenCode Skills - One-click installer with gamified XP stats",
   "type": "module",
   "bin": {
     "ocs-stats": "./bin/cli.js"
