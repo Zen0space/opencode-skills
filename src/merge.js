@@ -24,7 +24,7 @@ export const FILE_CATEGORY = {
 };
 
 const PROTECTED_CATEGORIES = [FILE_CATEGORY.XP_DATA, FILE_CATEGORY.MEMORIES];
-const MERGE_CATEGORIES = [FILE_CATEGORY.KNOWLEDGE];
+const SMART_MERGE_CATEGORIES = [FILE_CATEGORY.XP_DATA, FILE_CATEGORY.MEMORIES, FILE_CATEGORY.KNOWLEDGE];
 
 function hashFile(filePath) {
   if (!fs.existsSync(filePath)) return null;
@@ -63,6 +63,158 @@ function compareVersion(v1, v2) {
   return 0;
 }
 
+function smartMergeXp(userXp, templateXp) {
+  const preserveFields = [
+    'xp', 'level', 'title', 'totalTests', 'totalAudits',
+    'testsWritten', 'issuesFixed', 'testsFixed', 'patternsAdded',
+    'completedSuites', 'completedAudits', 'seenPatterns', 'seenIssues',
+    'mistakes', 'mistakeHistory', 'levelHistory'
+  ];
+  
+  let merged = { ...templateXp };
+  
+  for (const field of preserveFields) {
+    if (userXp[field] !== undefined) {
+      merged[field] = userXp[field];
+    }
+  }
+  
+  return merged;
+}
+
+function getSmartMergePreserveInfo(userXp, templateXp) {
+  const preserveFields = [
+    'xp', 'level', 'title', 'totalTests', 'totalAudits',
+    'testsWritten', 'issuesFixed', 'testsFixed', 'patternsAdded'
+  ];
+  
+  const preserved = [];
+  for (const field of preserveFields) {
+    if (userXp[field] !== undefined && userXp[field] !== 0) {
+      if (field === 'xp') {
+        preserved.push(`XP ${userXp[field]}`);
+      } else if (field === 'level') {
+        preserved.push(`level ${userXp[field]}`);
+      } else if (field === 'title') {
+        preserved.push(`title: ${userXp[field]}`);
+      } else if (field === 'totalTests') {
+        preserved.push(`tests: ${userXp[field]}`);
+      } else if (field === 'testsWritten' && userXp.testsWritten) {
+        const total = (userXp.testsWritten.unit || 0) + (userXp.testsWritten.integration || 0) + (userXp.testsWritten.e2e || 0);
+        if (total > 0) preserved.push(`tests: ${total}`);
+      } else if (field === 'issuesFixed' && userXp.issuesFixed) {
+        const total = (userXp.issuesFixed.critical || 0) + (userXp.issuesFixed.high || 0) + (userXp.issuesFixed.medium || 0) + (userXp.issuesFixed.low || 0);
+        if (total > 0) preserved.push(`fixed: ${total}`);
+      } else if (field === 'patternsAdded' && userXp.patternsAdded > 0) {
+        preserved.push(`patterns: ${userXp[field]}`);
+      }
+    }
+  }
+  
+  return preserved.length > 0 ? preserved.join(', ') : 'preserved';
+}
+
+function smartMergeMemories(userContent, templateContent) {
+  const templateSections = {};
+  const userSections = {};
+  
+  const parseSections = (content) => {
+    const sections = {};
+    const lines = content.split('\n');
+    let currentSection = null;
+    let currentLines = [];
+    
+    for (const line of lines) {
+      const headerMatch = line.match(/^(#{1,3})\s+(.+)$/);
+      if (headerMatch) {
+        if (currentSection) {
+          sections[currentSection] = currentLines.join('\n').trim();
+        }
+        currentSection = headerMatch[2];
+        currentLines = [];
+      } else {
+        currentLines.push(line);
+      }
+    }
+    if (currentSection) {
+      sections[currentSection] = currentLines.join('\n').trim();
+    }
+    return sections;
+  };
+  
+  const templateParsed = parseSections(templateContent);
+  const userParsed = parseSections(userContent);
+  
+  let merged = '';
+  const preservedSections = [];
+  
+  for (const sectionName of Object.keys(templateParsed)) {
+    if (userParsed[sectionName] && userParsed[sectionName].length > templateParsed[sectionName].length * 0.5) {
+      merged += `${templateParsed[sectionName].split('\n')[0]}\n${userParsed[sectionName]}\n`;
+      preservedSections.push(sectionName);
+    } else {
+      merged += templateParsed[sectionName] + '\n';
+    }
+  }
+  
+  return {
+    content: merged.trim(),
+    preservedSections
+  };
+}
+
+function smartMergeKnowledge(userContent, templateContent) {
+  const userLines = userContent.split('\n');
+  const templateLines = templateContent.split('\n');
+  
+  const userEntries = new Set();
+  const newEntries = [];
+  
+  let currentTable = null;
+  let inUserTable = false;
+  
+  for (const line of userLines) {
+    if (line.includes('|') && line.includes('---')) {
+      if (!inUserTable) inUserTable = true;
+      continue;
+    }
+    if (inUserTable && line.includes('|')) {
+      const cells = line.split('|').filter(c => c.trim());
+      if (cells.length >= 2 && !line.includes('Date') && !line.includes('---')) {
+        const entry = cells[1].trim();
+        if (entry && entry !== 'Mistake' && entry !== 'Pattern') {
+          userEntries.add(entry);
+        }
+      }
+    }
+  }
+  
+  let merged = '';
+  let newLessonsCount = 0;
+  let addedNewSection = false;
+  
+  for (const line of templateLines) {
+    if (line.includes('|') && line.includes('---')) {
+      merged += line + '\n';
+      continue;
+    }
+    
+    if (line.includes('|') && !userEntries.has(line.split('|')[1]?.trim())) {
+      merged += line + '\n';
+      newLessonsCount++;
+    } else if (line.includes('|') && userEntries.has(line.split('|')[1]?.trim())) {
+      // Skip - user has this entry
+    } else {
+      merged += line + '\n';
+    }
+  }
+  
+  return {
+    content: merged.trim(),
+    newEntriesCount: newLessonsCount
+  };
+}
+
 function getAllTemplateFiles(srcDir, baseDir = '') {
   const files = [];
   if (!fs.existsSync(srcDir)) return files;
@@ -81,50 +233,6 @@ function getAllTemplateFiles(srcDir, baseDir = '') {
     }
   }
   return files;
-}
-
-function findNewSections(oldContent, newContent) {
-  const newLines = newContent.split('\n');
-  const oldLines = oldContent.split('\n');
-  const newSections = [];
-  
-  let inNewSection = false;
-  let newSectionStart = -1;
-  
-  for (let i = 0; i < newLines.length; i++) {
-    const line = newLines[i];
-    const isHeader = /^#{1,3}\s+/.test(line);
-    
-    if (isHeader && !oldContent.includes(line)) {
-      if (inNewSection && newSectionStart > -1) {
-        newSections.push(newLines.slice(newSectionStart, i).join('\n'));
-      }
-      newSectionStart = i;
-      inNewSection = true;
-    }
-  }
-  
-  if (inNewSection && newSectionStart > -1) {
-    newSections.push(newLines.slice(newSectionStart).join('\n'));
-  }
-  
-  return newSections;
-}
-
-function mergeKnowledgeFiles(userContent, templateContent) {
-  const newSections = findNewSections(userContent, templateContent);
-  
-  if (newSections.length === 0) {
-    return { action: 'unchanged', content: userContent };
-  }
-  
-  let merged = userContent;
-  
-  for (const section of newSections) {
-    merged += '\n\n---\n\n' + section;
-  }
-  
-  return { action: 'merged', content: merged };
 }
 
 export async function checkForUpdates(targetDir) {
@@ -237,6 +345,59 @@ export async function performUpdate(targetDir, options = {}) {
       continue;
     }
     
+    if (SMART_MERGE_CATEGORIES.includes(category)) {
+      if (category === FILE_CATEGORY.XP_DATA) {
+        const userXp = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
+        const templateXp = JSON.parse(fs.readFileSync(templatePath, 'utf-8'));
+        
+        const preserveInfo = getSmartMergePreserveInfo(userXp, templateXp);
+        
+        if (!checkOnly) {
+          const merged = smartMergeXp(userXp, templateXp);
+          fs.writeFileSync(targetPath, JSON.stringify(merged, null, 2));
+        }
+        
+        results.merged.push({ path: relativePath, action: 'smart-merged', preserveInfo });
+        continue;
+      }
+      
+      if (category === FILE_CATEGORY.MEMORIES) {
+        const userContent = fs.readFileSync(targetPath, 'utf-8');
+        const templateContent = fs.readFileSync(templatePath, 'utf-8');
+        
+        const mergeResult = smartMergeMemories(userContent, templateContent);
+        
+        if (!checkOnly) {
+          fs.writeFileSync(targetPath, mergeResult.content, 'utf-8');
+        }
+        
+        results.merged.push({ 
+          path: relativePath, 
+          action: 'smart-merged', 
+          preserveInfo: mergeResult.preservedSections.join(', ')
+        });
+        continue;
+      }
+      
+      if (category === FILE_CATEGORY.KNOWLEDGE) {
+        const userContent = fs.readFileSync(targetPath, 'utf-8');
+        const templateContent = fs.readFileSync(templatePath, 'utf-8');
+        
+        const mergeResult = smartMergeKnowledge(userContent, templateContent);
+        
+        if (!checkOnly) {
+          fs.writeFileSync(targetPath, mergeResult.content, 'utf-8');
+        }
+        
+        results.merged.push({ 
+          path: relativePath, 
+          action: 'smart-merged', 
+          preserveInfo: `${mergeResult.newEntriesCount} new entries`
+        });
+        continue;
+      }
+    }
+    
     if (PROTECTED_CATEGORIES.includes(category)) {
       results.skipped.push({ path: relativePath, reason: 'protected (user data)' });
       continue;
@@ -250,18 +411,57 @@ export async function performUpdate(targetDir, options = {}) {
       continue;
     }
     
-    if (MERGE_CATEGORIES.includes(category)) {
-      const userContent = fs.readFileSync(targetPath, 'utf-8');
-      const templateContent = fs.readFileSync(templatePath, 'utf-8');
-      
-      const mergeResult = mergeKnowledgeFiles(userContent, templateContent);
-      
-      if (mergeResult.action === 'merged' && !checkOnly) {
-        fs.writeFileSync(targetPath, mergeResult.content, 'utf-8');
+    if (SMART_MERGE_CATEGORIES.includes(category)) {
+      if (category === FILE_CATEGORY.XP_DATA) {
+        const userXp = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
+        const templateXp = JSON.parse(fs.readFileSync(templatePath, 'utf-8'));
+        
+        const preserveInfo = getSmartMergePreserveInfo(userXp, templateXp);
+        
+        if (!checkOnly) {
+          const merged = smartMergeXp(userXp, templateXp);
+          fs.writeFileSync(targetPath, JSON.stringify(merged, null, 2));
+        }
+        
+        results.merged.push({ path: relativePath, action: 'smart-merged', preserveInfo });
+        continue;
       }
       
-      results.merged.push({ path: relativePath, sectionsAdded: mergeResult.action === 'merged' ? 1 : 0 });
-      continue;
+      if (category === FILE_CATEGORY.MEMORIES) {
+        const userContent = fs.readFileSync(targetPath, 'utf-8');
+        const templateContent = fs.readFileSync(templatePath, 'utf-8');
+        
+        const mergeResult = smartMergeMemories(userContent, templateContent);
+        
+        if (!checkOnly) {
+          fs.writeFileSync(targetPath, mergeResult.content, 'utf-8');
+        }
+        
+        results.merged.push({ 
+          path: relativePath, 
+          action: 'smart-merged', 
+          preserveInfo: mergeResult.preservedSections.join(', ')
+        });
+        continue;
+      }
+      
+      if (category === FILE_CATEGORY.KNOWLEDGE) {
+        const userContent = fs.readFileSync(targetPath, 'utf-8');
+        const templateContent = fs.readFileSync(templatePath, 'utf-8');
+        
+        const mergeResult = smartMergeKnowledge(userContent, templateContent);
+        
+        if (!checkOnly) {
+          fs.writeFileSync(targetPath, mergeResult.content, 'utf-8');
+        }
+        
+        results.merged.push({ 
+          path: relativePath, 
+          action: 'smart-merged', 
+          preserveInfo: `${mergeResult.newEntriesCount} new entries`
+        });
+        continue;
+      }
     }
     
     if (checkOnly) {
@@ -317,12 +517,13 @@ export function formatUpdateSummary(updateResult, checkOnly = false) {
   }
   
   if (results.merged.length > 0) {
-    console.log(`\n  Merged (${results.merged.length}):`);
-    for (const file of results.merged.slice(0, 3)) {
-      console.log(`    ◊ ${file.path}`);
+    console.log(`\n  Smart Merged (${results.merged.length}):`);
+    for (const file of results.merged.slice(0, 4)) {
+      const info = file.preserveInfo ? ` (${file.preserveInfo})` : '';
+      console.log(`    ◊ ${file.path}${info}`);
     }
-    if (results.merged.length > 3) {
-      console.log(`    ... and ${results.merged.length - 3} more`);
+    if (results.merged.length > 4) {
+      console.log(`    ... and ${results.merged.length - 4} more`);
     }
   }
   
