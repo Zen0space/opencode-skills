@@ -249,6 +249,16 @@ Display XP gain:
 npx ocs-stats display-xp 80 "Wrote 8 unit tests [testing]"
 ```
 
+This will display:
+```
+╔══════════════════════════════════════╗
+║  +80 XP  Wrote 8 unit tests         ║
+╠══════════════════════════════════════╣
+║  Level 1 - Novice                   ║
+║  [████████████░░░░░░░] 80/100       ║
+╚══════════════════════════════════════╝
+```
+
 ## Mistake Recording
 
 If you introduce a flaky test or make a mistake:
