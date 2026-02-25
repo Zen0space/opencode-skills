@@ -1,12 +1,3 @@
-const LEVEL_THRESHOLDS = [
-  { level: 1, title: 'Novice', xpRequired: 0 },
-  { level: 2, title: 'Apprentice', xpRequired: 150 },
-  { level: 3, title: 'Practitioner', xpRequired: 450 },
-  { level: 4, title: 'Expert', xpRequired: 900 },
-  { level: 5, title: 'Master', xpRequired: 1500 },
-  { level: 6, title: 'Grandmaster', xpRequired: 3000 }
-];
-
 const BOX_WIDTH = 40;
 const CONTENT_WIDTH = BOX_WIDTH - 2;
 
@@ -18,8 +9,8 @@ export function progressBar(current, max, width = 16) {
   return '█'.repeat(filled) + '░'.repeat(empty);
 }
 
-export function getNextLevelXp(currentLevel) {
-  const nextLevel = LEVEL_THRESHOLDS.find(t => t.level === currentLevel + 1);
+export function getNextLevelXp(currentLevel, levelThresholds) {
+  const nextLevel = levelThresholds?.find(t => t.level === currentLevel + 1);
   return nextLevel ? nextLevel.xpRequired : null;
 }
 
@@ -45,8 +36,8 @@ function emptyLine() {
 }
 
 export function showXpGain(amount, reason, data, category = 'security') {
-  const { xp, level, title } = data;
-  const nextLevelXp = getNextLevelXp(level);
+  const { xp, level, title, levelThresholds } = data;
+  const nextLevelXp = getNextLevelXp(level, levelThresholds);
   
   const xpText = `+${amount} XP  ${reason.substring(0, 24)}`;
   const levelText = `Level ${level} - ${title}`;
@@ -70,8 +61,8 @@ export function showXpGain(amount, reason, data, category = 'security') {
 }
 
 export function showStats(data, category = 'security') {
-  const { xp, level, title, issuesFixed, totalAudits, patternsAdded, mistakes, testsWritten, testsFixed, totalTests } = data;
-  const nextLevelXp = getNextLevelXp(level);
+  const { xp, level, title, issuesFixed, totalAudits, patternsAdded, mistakes, testsWritten, testsFixed, totalTests, levelThresholds } = data;
+  const nextLevelXp = getNextLevelXp(level, levelThresholds);
   
   const categoryTitle = category === 'testing' ? 'TESTING AGENT' : 'SECURITY AGENT';
   
