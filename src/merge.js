@@ -65,7 +65,7 @@ function compareVersion(v1, v2) {
 
 function smartMergeXp(userXp, templateXp) {
   const preserveFields = [
-    'xp', 'level', 'title', 'totalTests', 'totalAudits',
+    'xp', 'totalTests', 'totalAudits',
     'testsWritten', 'issuesFixed', 'testsFixed', 'patternsAdded',
     'completedSuites', 'completedAudits', 'seenPatterns', 'seenIssues',
     'mistakes', 'mistakeHistory', 'levelHistory'
@@ -78,6 +78,25 @@ function smartMergeXp(userXp, templateXp) {
       merged[field] = userXp[field];
     }
   }
+  
+  merged.xpTable = templateXp.xpTable;
+  merged.levelThresholds = templateXp.levelThresholds;
+  
+  const userXpValue = userXp.xp || 0;
+  merged.xp = userXpValue;
+  
+  const thresholds = templateXp.levelThresholds || [];
+  let newLevel = 1;
+  let newTitle = 'Novice';
+  for (let i = thresholds.length - 1; i >= 0; i--) {
+    if (userXpValue >= thresholds[i].xpRequired) {
+      newLevel = thresholds[i].level;
+      newTitle = thresholds[i].title;
+      break;
+    }
+  }
+  merged.level = newLevel;
+  merged.title = newTitle;
   
   return merged;
 }
