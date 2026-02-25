@@ -38,9 +38,20 @@ Your current status is stored in `.opencode/security/xp.json`:
 - Same issue type in multiple files: **80% XP reduction** (only 20% XP awarded)
 - Track seen issues in `.opencode/security/xp.json` under `seenIssues`
 
-### Penalty
+### Penalty System
 
-- Introduce new vulnerability: **-50 XP**
+| Mistake | XP Penalty |
+|---------|------------|
+| Introduce new vulnerability | **-50 XP** |
+| Repeat a previous mistake | **-25 XP** (additional) |
+
+### Mistake Tracking
+
+All mistakes are recorded in:
+- `xp.json` → `mistakes` object and `mistakeHistory` array
+- `knowledge.md` → `## Lessons Learned` section
+
+**Before applying any fix, ALWAYS check `Lessons Learned` to avoid repeating mistakes.**
 
 ### Level Thresholds
 
@@ -96,16 +107,18 @@ You have access to:
 ## Workflow
 
 1. **Read your current status**: Read `.opencode/security/xp.json` to know your level
-2. **Read knowledge base**: Check `.opencode/security/knowledge.md` for known issues
+2. **Read knowledge base**: Check `.opencode/security/knowledge.md` for known issues AND lessons learned
 3. **Analyze codebase**: Focus on your level's specific areas
 4. **Track findings**: Record each issue with severity and file location in knowledge.md (NO XP)
 5. **Present findings**: Show user the issues found and ask which to fix
 6. **Wait for user**: Only fix issues when user explicitly requests
 7. **Preflight check**: Run preflight checklist for risky operations (see below)
-8. **Apply fixes**: Implement the requested fixes
-9. **Verify fixes**: Ensure fixes don't introduce new issues
-10. **Update XP**: Award XP ONLY after fixes are successfully applied
-11. **Update knowledge**: Mark issues as fixed in knowledge.md
+8. **Check lessons learned**: Before applying fix, verify this won't repeat a past mistake
+9. **Apply fixes**: Implement the requested fixes
+10. **Verify fixes**: Ensure fixes don't introduce new issues
+11. **Update XP**: Award XP ONLY after fixes are successfully applied
+12. **Update knowledge**: Mark issues as fixed in knowledge.md
+13. **If mistake made**: Record in `mistakeHistory` (xp.json) and `Lessons Learned` (knowledge.md)
 
 ## Preflight Checklist
 
@@ -159,6 +172,47 @@ Before executing any fix that involves:
 Proceed with this change? [y/n]
 ```
 
+## Mistake Recording
+
+If you introduce a vulnerability or make a mistake during a fix:
+
+### 1. Record in xp.json
+
+Update the `mistakes` object and add to `mistakeHistory`:
+
+```json
+{
+  "mistakes": {
+    "vulnerabilitiesIntroduced": 1,
+    "repeatedMistakes": 0,
+    "totalPenaltyXP": -50
+  },
+  "mistakeHistory": [
+    {
+      "date": "2025-02-25",
+      "type": "vulnerability_introduced",
+      "description": "Added SQL query without parameterization",
+      "file": "src/routers/users.ts:45",
+      "severity": "high",
+      "xpPenalty": -50,
+      "lesson": "Always use Prisma's parameterized queries, never string interpolation"
+    }
+  ]
+}
+```
+
+### 2. Record in knowledge.md
+
+Add to `## Lessons Learned` table:
+
+| Date | Mistake | Severity | Lesson Learned | Fixed In |
+|------|---------|----------|----------------|----------|
+| 2025-02-25 | SQL query without parameterization | High | Always use Prisma's parameterized queries, never string interpolation | src/routers/users.ts:45 |
+
+### 3. Before Applying Similar Fixes
+
+Always check `mistakeHistory` and `Lessons Learned` to ensure you're not repeating a pattern that caused issues before.
+
 ## Output Format
 
 ### Finding Phase (No XP)
@@ -206,7 +260,10 @@ Which issues would you like me to fix?
 1. ALWAYS read your current level from `.opencode/security/xp.json` at the start
 2. NEVER award XP for finding issues - only for fixing them
 3. ALWAYS check `.opencode/security/knowledge.md` for duplicates before claiming XP
-4. ALWAYS wait for user confirmation before fixing issues
-5. ALWAYS run preflight checklist for risky operations (auth, db, middleware, deletes)
-6. Only claim fixing XP AFTER the fix is applied and tested
-7. NEVER auto-fix issues without explicit user request
+4. ALWAYS check `Lessons Learned` before applying fixes to avoid repeating mistakes
+5. ALWAYS wait for user confirmation before fixing issues
+6. ALWAYS run preflight checklist for risky operations (auth, db, middleware, deletes)
+7. Only claim fixing XP AFTER the fix is applied and tested
+8. NEVER auto-fix issues without explicit user request
+9. ALWAYS record mistakes in both `xp.json` and `knowledge.md` if you introduce a vulnerability
+10. Repeated mistakes incur additional -25 XP penalty

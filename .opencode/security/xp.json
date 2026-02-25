@@ -18,6 +18,12 @@
   "patternsAdded": 0,
   "completedAudits": [],
   "seenIssues": [],
+  "mistakes": {
+    "vulnerabilitiesIntroduced": 0,
+    "repeatedMistakes": 0,
+    "totalPenaltyXP": 0
+  },
+  "mistakeHistory": [],
   "levelHistory": [
     {
       "level": 1,
@@ -42,7 +48,8 @@
       "package": 75
     },
     "penalty": {
-      "introduceVulnerability": -50
+      "introduceVulnerability": -50,
+      "repeatMistake": -25
     }
   },
   "levelThresholds": [
