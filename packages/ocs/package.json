@@ -1,5 +1,5 @@
 {
-  "name": "ocs",
+  "name": "@zen0space/ocs",
   "version": "1.0.0",
   "description": "OpenCode Skills - Stats and XP display for security agent",
   "type": "module",
@@ -29,5 +29,8 @@
   "homepage": "https://github.com/Zen0space/opencode-skills#readme",
   "engines": {
     "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

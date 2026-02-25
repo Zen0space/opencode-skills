@@ -238,12 +238,12 @@ Which issues would you like me to fix?
 After updating XP in `xp.json`, display the XP gain to the user:
 
 ```bash
-npx ocs display-xp <amount> "<reason>"
+npx @zen0space/ocs security display-xp <amount> "<reason>"
 ```
 
 Example:
 ```bash
-npx ocs display-xp 35 "Fixed high issue"
+npx @zen0space/ocs security display-xp 35 "Fixed high issue"
 ```
 
 This will display:

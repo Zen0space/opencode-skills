@@ -61,10 +61,10 @@ OpenCode automatically loads any `.opencode` folder in your project root.
 
 ## Check Your Progress
 
-Use the `ocs` command to view your security agent's progress:
+Use the `@zen0space/ocs` command to view your security agent's progress:
 
 ```bash
-npx ocs stats
+npx @zen0space/ocs security stats
 ```
 
 Example output:
