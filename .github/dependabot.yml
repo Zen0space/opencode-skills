@@ -1,0 +1,41 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+    open-pull-requests-limit: 5
+    groups:
+      security-updates:
+        patterns:
+          - '*'
+        update-types:
+          - 'patch'
+          - 'minor'
+    labels:
+      - 'dependencies'
+      - 'security'
+    commit-message:
+      prefix: 'deps'
+      include: 'scope'
+    reviewers:
+      - 'Zen0space'
+    target-branch: 'main'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+    open-pull-requests-limit: 3
+    labels:
+      - 'ci/cd'
+      - 'dependencies'
+    commit-message:
+      prefix: 'ci'
+      include: 'scope'
+    reviewers:
+      - 'Zen0space'
