@@ -1,6 +1,6 @@
 {
   "name": "ocs-stats",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "OpenCode Skills - One-click installer with gamified XP stats",
   "type": "module",
   "bin": {
@@ -37,5 +37,9 @@
     "audit:fix": "npm audit fix",
     "prepublishOnly": "npm run audit",
     "sbom": "npm sbom --sbom-type application --sbom-format spdx"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
