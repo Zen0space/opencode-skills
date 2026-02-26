@@ -27,7 +27,7 @@ jobs:
       - name: Publish to npm with provenance
         run: npm publish --provenance --access public
       - name: Upload SBOM to release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: sbom.spdx.json
         env:
