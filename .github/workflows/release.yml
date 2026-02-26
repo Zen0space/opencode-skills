@@ -16,6 +16,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
           provenance: true
       - name: Upgrade npm for Trusted Publishing
         run: npm install -g npm@10
@@ -27,6 +28,8 @@ jobs:
         run: npm run sbom
       - name: Publish to npm with provenance
         run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Upload SBOM to release
         uses: softprops/action-gh-release@v2
         with:
