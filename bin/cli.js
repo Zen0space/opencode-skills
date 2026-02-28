@@ -10,6 +10,8 @@ const isHelp = args.includes('--help') || args.includes('-h');
 const isForce = args.includes('--force') || args.includes('-f');
 const isCheck = args.includes('--check') || args.includes('-c');
 
+const AGENT_CATEGORIES = ['security', 'testing', 'code-review', 'docs'];
+
 if (isHelp) {
   console.log(`
 ocs-stats - Install OpenCode skills and agents
@@ -20,10 +22,11 @@ Usage:
   npx ocs-stats update       Update skills (smart merge)
   npx ocs-stats update --check   Check for updates
   npx ocs-stats update --force   Force fresh install
-  npx ocs-stats stats        Show security agent progress
-  npx ocs-stats stats testing   Show testing agent progress
-  npx ocs-stats display-xp <amount> "<reason>"
-                                          Display XP gain (used by agent)
+  npx ocs-stats security     Show security agent progress
+  npx ocs-stats testing      Show testing agent progress
+  npx ocs-stats code-review  Show code-review agent progress
+  npx ocs-stats docs         Show docs agent progress
+  npx ocs-stats display-xp <amount> "<reason> [agent]"
 
 Options:
   -g, --global    Install to user home directory
@@ -36,10 +39,14 @@ Examples:
   npx ocs-stats update
   npx ocs-stats update --check
   npx ocs-stats update --force
-  npx ocs-stats stats
-  npx ocs-stats stats testing
-  npx ocs-stats display-xp 35 "Fixed high issue"
+  npx ocs-stats security
+  npx ocs-stats testing
+  npx ocs-stats code-review
+  npx ocs-stats docs
+  npx ocs-stats display-xp 35 "Fixed high issue [security]"
   npx ocs-stats display-xp 80 "Wrote 8 unit tests [testing]"
+  npx ocs-stats display-xp 25 "Reviewed PR #42 [code-review]"
+  npx ocs-stats display-xp 20 "Updated API docs [docs]"
 `);
   process.exit(0);
 }
@@ -53,17 +60,16 @@ else if (command === 'update') {
     });
 }
 
-else if (command === 'stats') {
-  const category = args[1] || 'security';
-  stats(category);
+else if (AGENT_CATEGORIES.includes(command)) {
+  stats(command);
   process.exit(0);
 }
 
 else if (command === 'display-xp') {
   const amount = args[1];
   const reason = args.slice(2).join(' ') || 'XP earned';
-  const category = reason.includes('[testing]') ? 'testing' : 'security';
-  const cleanReason = reason.replace(/\[testing\]/g, '').trim();
+  const category = reason.match(/\[(security|testing|code-review|docs)\]/)?.[1] || 'security';
+  const cleanReason = reason.replace(/\[(security|testing|code-review|docs)\]/g, '').trim();
   displayXp(amount, cleanReason, category);
   process.exit(0);
 }
