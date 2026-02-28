@@ -50,16 +50,19 @@ export async function init({ isGlobal = false } = {}) {
 
   console.log('Installed successfully!\n');
   console.log('What was installed:');
-  console.log('  * Agents: security, testing');
-  console.log('  * Skills: commit, memories, mobile, security, testing, webapp');
-  console.log('  * Security: XP tracking, knowledge base');
-  console.log('  * Testing: XP tracking, knowledge base\n');
+  console.log('  * Agents: security, testing, code-review, docs');
+  console.log('  * Skills: commit, memories, mobile, security, testing, webapp, code-review, docs');
+  console.log('  * XP tracking & knowledge base for all agents\n');
   
   if (!isGlobal) {
     console.log('Next steps:');
     console.log('  1. Edit .opencode/skills/memories/SKILL.md to match your project');
     console.log('  2. Run `opencode` in this directory to start using the skills\n');
-    console.log('Check progress: npx ocs-stats stats\n');
+    console.log('Check progress:');
+    console.log('  npx ocs-stats security');
+    console.log('  npx ocs-stats testing');
+    console.log('  npx ocs-stats code-review');
+    console.log('  npx ocs-stats docs\n');
   }
 }
 

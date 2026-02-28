@@ -1,6 +1,60 @@
 const BOX_WIDTH = 40;
 const CONTENT_WIDTH = BOX_WIDTH - 2;
 
+const CATEGORY_CONFIG = {
+  security: {
+    title: 'SECURITY AGENT',
+    getStats: (data) => {
+      const totalFixed = (data.issuesFixed?.critical || 0) + 
+                         (data.issuesFixed?.high || 0) + 
+                         (data.issuesFixed?.medium || 0) + 
+                         (data.issuesFixed?.low || 0);
+      return [
+        { label: 'Issues Fixed', value: totalFixed },
+        { label: 'Critical', value: data.issuesFixed?.critical || 0 },
+        { label: 'High', value: data.issuesFixed?.high || 0 },
+        { label: 'Medium', value: data.issuesFixed?.medium || 0 },
+        { label: 'Low', value: data.issuesFixed?.low || 0 },
+        { label: 'Audits Done', value: data.totalAudits || 0 },
+        { label: 'Patterns Added', value: data.patternsAdded || 0 }
+      ];
+    }
+  },
+  testing: {
+    title: 'TESTING AGENT',
+    getStats: (data) => [
+      { label: 'Tests Written', value: data.totalTests || 0 },
+      { label: 'Unit Tests', value: data.testsWritten?.unit || 0 },
+      { label: 'Integration', value: data.testsWritten?.integration || 0 },
+      { label: 'E2E Tests', value: data.testsWritten?.e2e || 0 },
+      { label: 'Tests Fixed', value: data.testsFixed || 0 },
+      { label: 'Patterns Added', value: data.patternsAdded || 0 }
+    ]
+  },
+  'code-review': {
+    title: 'CODE REVIEW AGENT',
+    getStats: (data) => [
+      { label: 'Total Reviews', value: data.totalReviews || 0 },
+      { label: 'Critical Found', value: data.issuesFound?.critical || 0 },
+      { label: 'High Found', value: data.issuesFound?.high || 0 },
+      { label: 'Medium Found', value: data.issuesFound?.medium || 0 },
+      { label: 'Low Found', value: data.issuesFound?.low || 0 },
+      { label: 'Patterns Added', value: data.patternsAdded || 0 }
+    ]
+  },
+  docs: {
+    title: 'DOCUMENTATION AGENT',
+    getStats: (data) => [
+      { label: 'Total Docs', value: data.totalDocsWritten || 0 },
+      { label: 'New Sections', value: data.docsStats?.newSections || 0 },
+      { label: 'Improvements', value: data.docsStats?.improvements || 0 },
+      { label: 'Code Examples', value: data.docsStats?.codeExamples || 0 },
+      { label: 'Tutorials', value: data.docsStats?.tutorials || 0 },
+      { label: 'API Docs', value: data.docsStats?.apiDocs || 0 }
+    ]
+  }
+};
+
 export function progressBar(current, max, width = 16) {
   const safeCurrent = Math.max(0, current);
   const safeMax = Math.max(1, max);
@@ -61,14 +115,12 @@ export function showXpGain(amount, reason, data, category = 'security') {
 }
 
 export function showStats(data, category = 'security') {
-  const { xp, level, title, issuesFixed, totalAudits, patternsAdded, mistakes, testsWritten, testsFixed, totalTests, levelThresholds } = data;
+  const { xp, level, title, mistakes, levelThresholds } = data;
   const nextLevelXp = getNextLevelXp(level, levelThresholds);
   
-  const categoryTitle = category === 'testing' ? 'TESTING AGENT' : 'SECURITY AGENT';
-  
-  const totalFixed = category === 'security' 
-    ? ((issuesFixed?.critical || 0) + (issuesFixed?.high || 0) + (issuesFixed?.medium || 0) + (issuesFixed?.low || 0))
-    : (testsFixed || 0);
+  const config = CATEGORY_CONFIG[category] || CATEGORY_CONFIG.security;
+  const categoryTitle = config.title;
+  const stats = config.getStats(data);
   
   const totalPenalty = mistakes?.totalPenaltyXP || 0;
   
@@ -91,17 +143,9 @@ export function showStats(data, category = 'security') {
   console.log(emptyLine());
   console.log(line('  Stats:'));
   
-  if (category === 'testing') {
-    console.log(line(`  * Tests Written:   ${totalTests || 0}`));
-    console.log(line(`  * Unit Tests:      ${testsWritten?.unit || 0}`));
-    console.log(line(`  * Integration:     ${testsWritten?.integration || 0}`));
-    console.log(line(`  * E2E Tests:       ${testsWritten?.e2e || 0}`));
-    console.log(line(`  * Tests Fixed:     ${testsFixed || 0}`));
-    console.log(line(`  * Patterns Added:  ${patternsAdded || 0}`));
-  } else {
-    console.log(line(`  * Issues Fixed:    ${totalFixed}`));
-    console.log(line(`  * Audits Done:     ${totalAudits || 0}`));
-    console.log(line(`  * Patterns Added:  ${patternsAdded || 0}`));
+  for (const stat of stats) {
+    const label = stat.label.padEnd(14);
+    console.log(line(`  * ${label}${stat.value}`));
   }
   
   console.log(line(`  * XP Penalties:    ${totalPenalty}`));
