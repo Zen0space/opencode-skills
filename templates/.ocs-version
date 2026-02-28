@@ -1,3 +1,4 @@
+1.2.6: Smart merge for agent files - preserve user mode/tools
 1.2.5: Add code-review and docs agents with stats display
 1.2.4: Change security and testing agents to primary mode
 1.1.7: Fix level recalculation during smart merge
