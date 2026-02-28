@@ -1,6 +1,6 @@
 ---
 description: Testing expert agent for writing unit, integration, and E2E tests
-mode: subagent
+mode: primary
 tools:
   write: true
   edit: true

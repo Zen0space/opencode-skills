@@ -1,3 +1,4 @@
+1.2.4: Change security and testing agents to primary mode
 1.1.7: Fix level recalculation during smart merge
 1.1.6: Smart merge - preserves XP, level, memories; updates template fields
 1.1.5: Git-like update - version tracking, --check/--force flags

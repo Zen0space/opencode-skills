@@ -1,6 +1,6 @@
 ---
 description: Security expert agent for auditing and identifying vulnerabilities
-mode: subagent
+mode: primary
 tools:
   write: true
   edit: true
