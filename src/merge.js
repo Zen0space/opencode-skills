@@ -24,12 +24,113 @@ export const FILE_CATEGORY = {
 };
 
 const PROTECTED_CATEGORIES = [FILE_CATEGORY.XP_DATA, FILE_CATEGORY.MEMORIES];
-const SMART_MERGE_CATEGORIES = [FILE_CATEGORY.XP_DATA, FILE_CATEGORY.MEMORIES, FILE_CATEGORY.KNOWLEDGE];
+const SMART_MERGE_CATEGORIES = [FILE_CATEGORY.XP_DATA, FILE_CATEGORY.MEMORIES, FILE_CATEGORY.KNOWLEDGE, FILE_CATEGORY.AGENT];
+
+const USER_PRESERVE_FIELDS = ['mode', 'tools', 'model', 'temperature', 'permission', 'hidden', 'color'];
 
 function hashFile(filePath) {
   if (!fs.existsSync(filePath)) return null;
   const content = fs.readFileSync(filePath, 'utf-8');
   return crypto.createHash('md5').update(content).digest('hex');
+}
+
+function parseFrontmatter(content) {
+  const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return { frontmatter: {}, body: content };
+  
+  const frontmatterStr = match[1];
+  const body = match[2];
+  const frontmatter = {};
+  
+  const lines = frontmatterStr.split('\n');
+  let currentKey = null;
+  let currentObj = null;
+  
+  for (const line of lines) {
+    const keyMatch = line.match(/^(\w+):\s*(.*)$/);
+    if (keyMatch) {
+      const key = keyMatch[1];
+      const value = keyMatch[2].trim();
+      
+      if (value === '' && lines[lines.indexOf(line) + 1]?.startsWith('  ')) {
+        currentKey = key;
+        currentObj = {};
+        frontmatter[key] = currentObj;
+      } else if (value === 'true') {
+        frontmatter[key] = true;
+        currentKey = null;
+      } else if (value === 'false') {
+        frontmatter[key] = false;
+        currentKey = null;
+      } else if (!isNaN(value) && value !== '') {
+        frontmatter[key] = parseFloat(value);
+        currentKey = null;
+      } else {
+        frontmatter[key] = value;
+        currentKey = null;
+      }
+    } else if (line.startsWith('  ') && currentObj) {
+      const nestedMatch = line.match(/^\s+(\w+):\s*(.*)$/);
+      if (nestedMatch) {
+        const nestedKey = nestedMatch[1];
+        const nestedValue = nestedMatch[2].trim();
+        if (nestedValue === 'true') {
+          currentObj[nestedKey] = true;
+        } else if (nestedValue === 'false') {
+          currentObj[nestedKey] = false;
+        } else {
+          currentObj[nestedKey] = nestedValue;
+        }
+      }
+    }
+  }
+  
+  return { frontmatter, body };
+}
+
+function serializeFrontmatter(frontmatter) {
+  let result = '---\n';
+  
+  for (const [key, value] of Object.entries(frontmatter)) {
+    if (typeof value === 'object' && value !== null) {
+      result += `${key}:\n`;
+      for (const [nestedKey, nestedValue] of Object.entries(value)) {
+        result += `  ${nestedKey}: ${nestedValue}\n`;
+      }
+    } else {
+      result += `${key}: ${value}\n`;
+    }
+  }
+  
+  result += '---\n';
+  return result;
+}
+
+function smartMergeAgent(userContent, templateContent) {
+  const userParsed = parseFrontmatter(userContent);
+  const templateParsed = parseFrontmatter(templateContent);
+  
+  const mergedFrontmatter = { ...templateParsed.frontmatter };
+  const preservedFields = [];
+  
+  for (const field of USER_PRESERVE_FIELDS) {
+    if (userParsed.frontmatter[field] !== undefined) {
+      const userValue = JSON.stringify(userParsed.frontmatter[field]);
+      const templateValue = JSON.stringify(templateParsed.frontmatter[field]);
+      
+      if (userValue !== templateValue) {
+        mergedFrontmatter[field] = userParsed.frontmatter[field];
+        preservedFields.push(field);
+      }
+    }
+  }
+  
+  const mergedContent = serializeFrontmatter(mergedFrontmatter) + templateParsed.body;
+  
+  return {
+    content: mergedContent,
+    preservedFields
+  };
 }
 
 function getCategory(relativePath) {
@@ -422,6 +523,28 @@ export async function performUpdate(targetDir, options = {}) {
         });
         continue;
       }
+      
+      if (category === FILE_CATEGORY.AGENT) {
+        const userContent = fs.readFileSync(targetPath, 'utf-8');
+        const templateContent = fs.readFileSync(templatePath, 'utf-8');
+        
+        const mergeResult = smartMergeAgent(userContent, templateContent);
+        
+        if (!checkOnly) {
+          fs.writeFileSync(targetPath, mergeResult.content, 'utf-8');
+        }
+        
+        const preserveInfo = mergeResult.preservedFields.length > 0 
+          ? `${mergeResult.preservedFields.join(', ')} preserved`
+          : 'updated';
+        
+        results.merged.push({ 
+          path: relativePath, 
+          action: 'smart-merged', 
+          preserveInfo
+        });
+        continue;
+      }
     }
     
     if (PROTECTED_CATEGORIES.includes(category)) {
@@ -435,59 +558,6 @@ export async function performUpdate(targetDir, options = {}) {
       }
       results.updated.push(relativePath);
       continue;
-    }
-    
-    if (SMART_MERGE_CATEGORIES.includes(category)) {
-      if (category === FILE_CATEGORY.XP_DATA) {
-        const userXp = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
-        const templateXp = JSON.parse(fs.readFileSync(templatePath, 'utf-8'));
-        
-        const preserveInfo = getSmartMergePreserveInfo(userXp, templateXp);
-        
-        if (!checkOnly) {
-          const merged = smartMergeXp(userXp, templateXp);
-          fs.writeFileSync(targetPath, JSON.stringify(merged, null, 2));
-        }
-        
-        results.merged.push({ path: relativePath, action: 'smart-merged', preserveInfo });
-        continue;
-      }
-      
-      if (category === FILE_CATEGORY.MEMORIES) {
-        const userContent = fs.readFileSync(targetPath, 'utf-8');
-        const templateContent = fs.readFileSync(templatePath, 'utf-8');
-        
-        const mergeResult = smartMergeMemories(userContent, templateContent);
-        
-        if (!checkOnly) {
-          fs.writeFileSync(targetPath, mergeResult.content, 'utf-8');
-        }
-        
-        results.merged.push({ 
-          path: relativePath, 
-          action: 'smart-merged', 
-          preserveInfo: mergeResult.preservedSections.join(', ')
-        });
-        continue;
-      }
-      
-      if (category === FILE_CATEGORY.KNOWLEDGE) {
-        const userContent = fs.readFileSync(targetPath, 'utf-8');
-        const templateContent = fs.readFileSync(templatePath, 'utf-8');
-        
-        const mergeResult = smartMergeKnowledge(userContent, templateContent);
-        
-        if (!checkOnly) {
-          fs.writeFileSync(targetPath, mergeResult.content, 'utf-8');
-        }
-        
-        results.merged.push({ 
-          path: relativePath, 
-          action: 'smart-merged', 
-          preserveInfo: `${mergeResult.newEntriesCount} new entries`
-        });
-        continue;
-      }
     }
     
     if (checkOnly) {

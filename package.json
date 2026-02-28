@@ -1,6 +1,6 @@
 {
   "name": "ocs-stats",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "OpenCode Skills - One-click installer with gamified XP stats",
   "type": "module",
   "bin": {
