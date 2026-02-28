@@ -1,0 +1,46 @@
+{
+  "xp": 0,
+  "level": 1,
+  "title": "Novice",
+  "totalReviews": 0,
+  "issuesFound": {
+    "critical": 0,
+    "high": 0,
+    "medium": 0,
+    "low": 0
+  },
+  "seenPatterns": [],
+  "mistakes": {
+    "missedBugs": 0,
+    "harmfulSuggestions": 0,
+    "repeatedMistakes": 0,
+    "totalPenaltyXP": 0
+  },
+  "mistakeHistory": [],
+  "xpTable": {
+    "actions": {
+      "completeFileReview": 10,
+      "identifyPotentialBug": 25,
+      "suggestPerformanceImprovement": 20,
+      "findSecurityIssue": 30,
+      "suggestBetterPattern": 15,
+      "identifyCodeSmell": 10,
+      "suggestRefactoring": 15,
+      "completePRReview": 50,
+      "addNewPattern": 30
+    },
+    "penalty": {
+      "missObviousBug": -20,
+      "suggestHarmfulPattern": -25,
+      "repeatMistake": -15
+    }
+  },
+  "levelThresholds": [
+    { "level": 1, "title": "Novice", "xpRequired": 0 },
+    { "level": 2, "title": "Apprentice", "xpRequired": 150 },
+    { "level": 3, "title": "Practitioner", "xpRequired": 450 },
+    { "level": 4, "title": "Expert", "xpRequired": 900 },
+    { "level": 5, "title": "Master", "xpRequired": 1500 },
+    { "level": 6, "title": "Grandmaster", "xpRequired": 3000 }
+  ]
+}
