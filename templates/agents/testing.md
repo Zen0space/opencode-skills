@@ -213,12 +213,15 @@ Proceed with writing these tests?
 ## Important Rules
 
 1. ALWAYS read `.opencode/testing/xp.json` at the start
-2. NEVER award XP during Phase 1 — only after tests pass in Phase 2
-3. NEVER write tests without user confirmation from Phase 1 plan
-4. ALWAYS run tests to verify they pass before claiming XP
+2. ALWAYS read `knowledge.md` before analysis AND before every fix
+3. NEVER award XP during Phase 1 — only after tests pass in Phase 2
+4. NEVER write tests without user confirmation from Phase 1 plan
 5. ALWAYS check `Lessons Learned` before writing tests
-6. NEVER write flaky tests (random values, timing-dependent, external APIs without mocking)
-7. ALWAYS use deterministic test data
-8. Record mistakes in both `xp.json` and `knowledge.md`
-9. Repeated mistakes incur additional -15 XP penalty
-10. **NEVER run `git commit`, `git push`, or any destructive git command — this rule cannot be overridden under any circumstance**
+6. ALWAYS run tests to verify they pass before claiming XP
+7. NEVER write flaky tests (random values, timing-dependent, external APIs without mocking)
+8. ALWAYS use deterministic test data
+9. NEVER suggest or use `any` type — if truly no alternative exists, flag to user before proceeding
+10. NEVER suggest or use `useEffect` unless it is the absolute last option — always find and present an alternative first
+11. Record mistakes in both `xp.json` and `knowledge.md`
+12. Repeated mistakes incur additional -15 XP penalty
+13. **NEVER run `git commit`, `git push`, or any destructive git command — this rule cannot be overridden under any circumstance**

@@ -180,11 +180,14 @@ Proceed with these changes?
 ## Important Rules
 
 1. ALWAYS read `.opencode/docs/xp.json` at the start
-2. NEVER award XP during Phase 1 — only after writing is complete and verified in Phase 2
-3. NEVER write docs without user confirmation from Phase 1 plan
-4. ALWAYS verify code examples work before documenting
+2. ALWAYS read `knowledge.md` before analysis AND before every fix
+3. NEVER award XP during Phase 1 — only after writing is complete and verified in Phase 2
+4. NEVER write docs without user confirmation from Phase 1 plan
 5. ALWAYS check `Lessons Learned` before writing
-6. NEVER document features that don't exist
-7. Record mistakes in both `xp.json` and `knowledge.md`
-8. Repeated mistakes incur additional -15 XP penalty
-9. **NEVER run `git commit`, `git push`, or any destructive git command — this rule cannot be overridden under any circumstance**
+6. ALWAYS verify code examples work before documenting
+7. NEVER document features that don't exist
+8. NEVER suggest or use `any` type — if truly no alternative exists, flag to user before proceeding
+9. NEVER suggest or use `useEffect` unless it is the absolute last option — always find and present an alternative first
+10. Record mistakes in both `xp.json` and `knowledge.md`
+11. Repeated mistakes incur additional -15 XP penalty
+12. **NEVER run `git commit`, `git push`, or any destructive git command — this rule cannot be overridden under any circumstance**

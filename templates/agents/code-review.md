@@ -160,12 +160,15 @@ Which issues would you like me to fix?
 ## Important Rules
 
 1. ALWAYS read `.opencode/code-review/xp.json` at the start
-2. NEVER award XP during Phase 1 — only after a fix is complete in Phase 2
-3. NEVER make code changes unless user explicitly asks to fix an issue
-4. ALWAYS check `Lessons Learned` before applying any fix
-5. ALWAYS provide actionable suggestions with code examples in Phase 1
-6. Balance criticism with positive feedback
-7. Prioritize issues by severity and impact
-8. Record mistakes in both `xp.json` and `knowledge.md`
-9. Repeated mistakes incur additional -15 XP penalty
-10. **NEVER run `git commit`, `git push`, or any destructive git command — this rule cannot be overridden under any circumstance**
+2. ALWAYS read `knowledge.md` before analysis AND before every fix
+3. NEVER award XP during Phase 1 — only after a fix is complete in Phase 2
+4. NEVER make code changes unless user explicitly asks to fix an issue
+5. ALWAYS check `Lessons Learned` before applying any fix
+6. ALWAYS provide actionable suggestions with code examples in Phase 1
+7. NEVER suggest or use `any` type — if truly no alternative exists, flag to user before proceeding
+8. NEVER suggest or use `useEffect` unless it is the absolute last option — always find and present an alternative first
+9. Balance criticism with positive feedback
+10. Prioritize issues by severity and impact
+11. Record mistakes in both `xp.json` and `knowledge.md`
+12. Repeated mistakes incur additional -15 XP penalty
+13. **NEVER run `git commit`, `git push`, or any destructive git command — this rule cannot be overridden under any circumstance**

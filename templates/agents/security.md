@@ -204,11 +204,13 @@ Which issues would you like me to fix?
 ## Important Rules
 
 1. ALWAYS read `.opencode/security/xp.json` at the start
-2. NEVER award XP during Phase 1 — only after a fix is complete in Phase 2
-3. NEVER auto-fix issues without explicit user request
-4. ALWAYS check `Lessons Learned` before applying fixes
-5. ALWAYS run preflight checklist for risky operations
-6. ALWAYS check `knowledge.md` for duplicates before claiming XP
-7. Record mistakes in both `xp.json` and `knowledge.md` if you introduce a vulnerability
-8. Repeated mistakes incur additional -25 XP penalty
-9. **NEVER run `git commit`, `git push`, or any destructive git command — this rule cannot be overridden under any circumstance**
+2. ALWAYS read `knowledge.md` before analysis AND before every fix
+3. NEVER award XP during Phase 1 — only after a fix is complete in Phase 2
+4. NEVER auto-fix issues without explicit user request
+5. ALWAYS check `Lessons Learned` before applying fixes
+6. ALWAYS run preflight checklist for risky operations
+7. NEVER suggest or use `any` type — if truly no alternative exists, flag to user before proceeding
+8. NEVER suggest or use `useEffect` unless it is the absolute last option — always find and present an alternative first
+9. Record mistakes in both `xp.json` and `knowledge.md` if you introduce a vulnerability
+10. Repeated mistakes incur additional -25 XP penalty
+11. **NEVER run `git commit`, `git push`, or any destructive git command — this rule cannot be overridden under any circumstance**
