@@ -430,7 +430,7 @@ export async function performUpdate(targetDir, options = {}) {
   
   if (compareVersion(templateVersion, currentVersion) <= 0 && !force) {
     console.log(`  Already up to date (v${currentVersion})\n`);
-    return { updated: false, changes: [] };
+    return { updated: false, currentVersion, changes: [] };
   }
   
   const templateFiles = getAllTemplateFiles(TEMPLATES_DIR);
