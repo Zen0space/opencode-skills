@@ -2,59 +2,17 @@
   "xp": 0,
   "level": 1,
   "title": "Novice",
-  "totalTests": 0,
-  "testsWritten": {
-    "unit": 0,
-    "integration": 0,
-    "e2e": 0
-  },
+  "testsWritten": { "unit": 0, "integration": 0, "e2e": 0 },
   "testsFixed": 0,
-  "patternsAdded": 0,
-  "completedSuites": [],
   "seenPatterns": [],
-  "mistakes": {
-    "flakyTests": 0,
-    "repeatedMistakes": 0,
-    "totalPenaltyXP": 0
-  },
+  "mistakes": { "total": 0, "totalPenaltyXP": 0 },
   "mistakeHistory": [],
-  "levelHistory": [
-    {
-      "level": 1,
-      "title": "Novice",
-      "xpRequired": 0,
-      "unlockedAt": null
-    }
-  ],
-  "xpTable": {
-    "tests": {
-      "unit": 10,
-      "integration": 15,
-      "e2e": 20
-    },
-    "fixes": {
-      "brokenTest": 10,
-      "flakyTest": 15
-    },
-    "knowledge": {
-      "addPattern": 30,
-      "documentPattern": 20
-    },
-    "completion": {
-      "singleFile": 20,
-      "package": 100
-    },
-    "penalty": {
-      "introduceFlaky": -25,
-      "repeatMistake": -15
-    }
-  },
   "levelThresholds": [
-    { "level": 1, "title": "Novice", "xpRequired": 0, "focus": "Basic unit tests" },
-    { "level": 2, "title": "Apprentice", "xpRequired": 150, "focus": "Integration tests" },
-    { "level": 3, "title": "Practitioner", "xpRequired": 450, "focus": "E2E tests" },
-    { "level": 4, "title": "Expert", "xpRequired": 900, "focus": "Test patterns & mocking" },
-    { "level": 5, "title": "Master", "xpRequired": 1500, "focus": "Full coverage strategies" },
-    { "level": 6, "title": "Grandmaster", "xpRequired": 3000, "focus": "Testing excellence" }
+    { "level": 1, "title": "Novice",       "xpToNextLevel": 150 },
+    { "level": 2, "title": "Apprentice",   "xpToNextLevel": 300 },
+    { "level": 3, "title": "Practitioner", "xpToNextLevel": 450 },
+    { "level": 4, "title": "Expert",       "xpToNextLevel": 1500 },
+    { "level": 5, "title": "Master",       "xpToNextLevel": 3000 },
+    { "level": 6, "title": "Grandmaster",  "xpToNextLevel": null }
   ]
 }

@@ -241,3 +241,46 @@ code here
 | Broken links | Frustrates users | Verify regularly |
 | No structure | Hard to navigate | Use TOC, headers |
 | Copy-paste errors | Incorrect info | Test all examples |
+
+---
+
+## Fix-First Process
+
+### Phase 1 — Read & Plan (NO XP)
+
+1. Read current level from `.opencode/docs/xp.json`
+2. Check `.opencode/docs/knowledge.md` for known patterns and `Lessons Learned`
+3. Analyze existing documentation structure
+4. Outline what needs to be written or updated
+5. Present plan to user — await their confirmation
+
+### Phase 2 — Write/Update (XP awarded only after doc is written and verified accurate)
+
+6. Check `Lessons Learned` before writing
+7. Write or update the documentation
+8. Verify all code examples are accurate and work
+9. Update XP in `.opencode/docs/xp.json`
+10. Update `knowledge.md` with new patterns or lessons
+
+### XP Awards
+
+| Action | XP |
+|--------|-----|
+| Write new doc section | +20 XP |
+| Improve existing docs | +15 XP |
+| Add code examples | +10 XP |
+| Fix doc typos/errors | +5 XP |
+| Create tutorial/guide | +40 XP |
+| Write API documentation | +25 XP |
+| Update README | +15 XP |
+| Add JSDoc comments | +10 XP |
+| Create changelog entry | +10 XP |
+| Add new pattern to skill | +30 XP |
+
+### Rules
+
+- XP only awarded after writing is complete and content is verified accurate
+- Never write docs without user confirmation from Phase 1 plan
+- Never document features that don't exist
+- Always test code examples before including them
+- Record mistakes in both `xp.json` and `knowledge.md`
