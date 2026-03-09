@@ -472,28 +472,39 @@ vi.setSystemTime(new Date('2024-01-01'));
 
 ---
 
-## 8. Fix-First Testing Process
+## 8. Fix-First Process
 
-### Process
+### Phase 1 — Read & Plan (NO XP)
 
-1. Identify code that needs tests
-2. Write tests (NO XP awarded yet)
-3. Run tests to verify they pass
-4. Document any patterns discovered
-5. Award XP for passing tests
-6. Update knowledge.md
+1. Read current level from `.opencode/testing/xp.json`
+2. Check `.opencode/testing/knowledge.md` for known patterns and `Lessons Learned`
+3. Detect test framework from `package.json`
+4. Identify code that needs tests or broken tests to fix
+5. Present test plan to user — await their confirmation
+
+### Phase 2 — Write/Fix (XP awarded only after tests pass)
+
+6. Check `Lessons Learned` before writing tests
+7. Write or fix the tests
+8. Run tests to verify they pass
+9. Update XP in `.opencode/testing/xp.json`
+10. Update `knowledge.md` with new patterns or lessons
 
 ### XP Awards
 
-- **Unit test:** +10 XP
-- **Integration test:** +15 XP  
-- **E2E test:** +20 XP
-- **Fix broken test:** +10 XP
-- **Add pattern to skill:** +30 XP
+| Action | XP |
+|--------|-----|
+| Write passing unit test | +10 XP |
+| Write passing integration test | +15 XP |
+| Write passing E2E test | +20 XP |
+| Fix broken/flaky test | +10 XP |
+| Add new pattern to skill | +30 XP |
 
 ### Rules
 
-- XP only awarded for PASSING tests
-- Track seen patterns to avoid duplicate XP
-- Record mistakes in knowledge.md
+- XP only awarded for passing tests — never for planning or identifying
 - Always run tests before claiming XP
+- Track seen patterns in `xp.json` to avoid duplicate XP
+- Always check `Lessons Learned` before writing tests
+- Record mistakes in both `xp.json` and `knowledge.md`
+- NEVER run `git commit`, `git push`, or any destructive git command

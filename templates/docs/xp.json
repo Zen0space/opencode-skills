@@ -2,49 +2,15 @@
   "xp": 0,
   "level": 1,
   "title": "Novice",
-  "totalDocsWritten": 0,
-  "docsStats": {
-    "newSections": 0,
-    "improvements": 0,
-    "codeExamples": 0,
-    "tutorials": 0,
-    "apiDocs": 0
-  },
-  "seenPatterns": [],
-  "mistakes": {
-    "incorrectDocs": 0,
-    "outdatedDocs": 0,
-    "brokenExamples": 0,
-    "repeatedMistakes": 0,
-    "totalPenaltyXP": 0
-  },
+  "docsWritten": { "sections": 0, "tutorials": 0, "apiDocs": 0 },
+  "mistakes": { "total": 0, "totalPenaltyXP": 0 },
   "mistakeHistory": [],
-  "xpTable": {
-    "actions": {
-      "writeNewSection": 20,
-      "improveExistingDocs": 15,
-      "addCodeExamples": 10,
-      "fixTyposErrors": 5,
-      "createTutorial": 40,
-      "writeApiDocs": 25,
-      "updateReadme": 15,
-      "addJsDocComments": 10,
-      "createChangelogEntry": 10,
-      "addNewPattern": 30
-    },
-    "penalty": {
-      "documentIncorrectBehavior": -25,
-      "outdatedDocumentation": -15,
-      "brokenCodeExamples": -20,
-      "repeatMistake": -15
-    }
-  },
   "levelThresholds": [
-    { "level": 1, "title": "Novice", "xpRequired": 0 },
-    { "level": 2, "title": "Apprentice", "xpRequired": 150 },
-    { "level": 3, "title": "Practitioner", "xpRequired": 450 },
-    { "level": 4, "title": "Expert", "xpRequired": 900 },
-    { "level": 5, "title": "Master", "xpRequired": 1500 },
-    { "level": 6, "title": "Grandmaster", "xpRequired": 3000 }
+    { "level": 1, "title": "Novice",       "xpToNextLevel": 150 },
+    { "level": 2, "title": "Apprentice",   "xpToNextLevel": 300 },
+    { "level": 3, "title": "Practitioner", "xpToNextLevel": 450 },
+    { "level": 4, "title": "Expert",       "xpToNextLevel": 1500 },
+    { "level": 5, "title": "Master",       "xpToNextLevel": 3000 },
+    { "level": 6, "title": "Grandmaster",  "xpToNextLevel": null }
   ]
 }

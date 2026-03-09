@@ -387,23 +387,40 @@ try {
 
 ---
 
-## 9. Fix-First Security Process
+## 9. Fix-First Process
 
-### Process
+### Phase 1 — Read & Audit (NO XP)
 
-1. Audit code and identify vulnerabilities
-2. Document findings in `.opencode/security/knowledge.md` (NO XP awarded)
-3. Present findings to user with severity and file locations
-4. User selects which issues to fix
-5. Apply fixes and verify they work
-6. Award XP only after successful fix
+1. Read current level from `.opencode/security/xp.json`
+2. Check `.opencode/security/knowledge.md` for known issues and `Lessons Learned`
+3. Analyze codebase and identify vulnerabilities by severity
+4. Present findings to user — await their decision
+
+### Phase 2 — Fix (XP awarded only after fix is complete)
+
+5. Check `Lessons Learned` before applying the fix
+6. Apply the requested fix
+7. Verify fix doesn't introduce new issues
+8. Update XP in `.opencode/security/xp.json`
+9. Update `knowledge.md` — mark issues as fixed, record new lessons
+
+### XP Awards
+
+| Action | XP |
+|--------|-----|
+| Fix critical vulnerability | +60 XP |
+| Fix high vulnerability | +35 XP |
+| Fix medium vulnerability | +15 XP |
+| Fix low vulnerability | +10 XP |
+| Add new pattern to skill | +30 XP |
 
 ### Rules
 
-- Never auto-fix without user request
-- XP is earned through remediation, not discovery
-- Always verify fixes don't introduce new issues
-- Update knowledge.md to mark issues as fixed
+- XP only awarded for completed fixes — never for finding or auditing
+- Never auto-fix without explicit user request
+- Always check `Lessons Learned` before applying any fix
+- Record mistakes in both `xp.json` and `knowledge.md`
+- NEVER run `git commit`, `git push`, or any destructive git command
 
 ---
 

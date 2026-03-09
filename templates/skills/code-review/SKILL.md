@@ -160,3 +160,38 @@ type Role = typeof ROLES[number]
 | Copy-paste coding | Bug duplication | Extract shared code |
 | Deep inheritance | Fragile base class | Composition |
 | Global state | Hidden dependencies | Dependency injection |
+
+---
+
+## Fix-First Process
+
+### Phase 1 — Read & Analyze (NO XP)
+
+1. Read current level from `.opencode/code-review/xp.json`
+2. Check `.opencode/code-review/knowledge.md` for known patterns and `Lessons Learned`
+3. Analyze the code and identify issues by severity
+4. Present findings to user — await their decision
+
+### Phase 2 — Fix (XP awarded only after fix is complete)
+
+5. Check `Lessons Learned` before applying the fix
+6. Apply the requested fix
+7. Verify the fix doesn't introduce new issues
+8. Update XP in `.opencode/code-review/xp.json`
+9. Update `knowledge.md` with new patterns or lessons
+
+### XP Awards
+
+| Action | XP |
+|--------|-----|
+| Fix critical issue | +60 XP |
+| Fix high issue | +35 XP |
+| Fix medium issue | +20 XP |
+| Fix low issue | +10 XP |
+| Add new pattern to skill | +30 XP |
+
+### Rules
+
+- XP only awarded for completed fixes — never for finding or reviewing
+- Always check `Lessons Learned` before applying any fix
+- Record mistakes in both `xp.json` and `knowledge.md`
