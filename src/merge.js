@@ -166,10 +166,12 @@ function compareVersion(v1, v2) {
 
 function smartMergeXp(userXp, templateXp) {
   const preserveFields = [
-    'xp', 'totalTests', 'totalAudits',
-    'testsWritten', 'issuesFixed', 'testsFixed', 'patternsAdded',
-    'completedSuites', 'completedAudits', 'seenPatterns', 'seenIssues',
-    'mistakes', 'mistakeHistory', 'levelHistory'
+    'xp', 'level', 'title',
+    'testsWritten', 'testsFixed',
+    'issuesFixed',
+    'docsWritten',
+    'seenIssues', 'seenPatterns',
+    'mistakes', 'mistakeHistory'
   ];
   
   let merged = { ...templateXp };
@@ -180,7 +182,6 @@ function smartMergeXp(userXp, templateXp) {
     }
   }
   
-  merged.xpTable = templateXp.xpTable;
   merged.levelThresholds = templateXp.levelThresholds;
   
   const userXpValue = userXp.xp || 0;
@@ -190,7 +191,7 @@ function smartMergeXp(userXp, templateXp) {
   let newLevel = 1;
   let newTitle = 'Novice';
   for (let i = thresholds.length - 1; i >= 0; i--) {
-    if (userXpValue >= thresholds[i].xpRequired) {
+    if (userXpValue >= thresholds[i].xpToNextLevel) {
       newLevel = thresholds[i].level;
       newTitle = thresholds[i].title;
       break;
@@ -204,8 +205,9 @@ function smartMergeXp(userXp, templateXp) {
 
 function getSmartMergePreserveInfo(userXp, templateXp) {
   const preserveFields = [
-    'xp', 'level', 'title', 'totalTests', 'totalAudits',
-    'testsWritten', 'issuesFixed', 'testsFixed', 'patternsAdded'
+    'xp', 'level', 'title',
+    'testsWritten', 'testsFixed',
+    'issuesFixed', 'docsWritten',
   ];
   
   const preserved = [];
@@ -217,16 +219,17 @@ function getSmartMergePreserveInfo(userXp, templateXp) {
         preserved.push(`level ${userXp[field]}`);
       } else if (field === 'title') {
         preserved.push(`title: ${userXp[field]}`);
-      } else if (field === 'totalTests') {
-        preserved.push(`tests: ${userXp[field]}`);
-      } else if (field === 'testsWritten' && userXp.testsWritten) {
+      } else       if (field === 'testsWritten' && userXp.testsWritten) {
         const total = (userXp.testsWritten.unit || 0) + (userXp.testsWritten.integration || 0) + (userXp.testsWritten.e2e || 0);
         if (total > 0) preserved.push(`tests: ${total}`);
+      } else if (field === 'testsFixed' && userXp.testsFixed > 0) {
+        preserved.push(`fixed: ${userXp.testsFixed}`);
       } else if (field === 'issuesFixed' && userXp.issuesFixed) {
         const total = (userXp.issuesFixed.critical || 0) + (userXp.issuesFixed.high || 0) + (userXp.issuesFixed.medium || 0) + (userXp.issuesFixed.low || 0);
         if (total > 0) preserved.push(`fixed: ${total}`);
-      } else if (field === 'patternsAdded' && userXp.patternsAdded > 0) {
-        preserved.push(`patterns: ${userXp[field]}`);
+      } else if (field === 'docsWritten' && userXp.docsWritten) {
+        const total = (userXp.docsWritten.sections || 0) + (userXp.docsWritten.tutorials || 0) + (userXp.docsWritten.apiDocs || 0);
+        if (total > 0) preserved.push(`docs: ${total}`);
       }
     }
   }
