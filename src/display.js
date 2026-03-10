@@ -5,52 +5,50 @@ const CATEGORY_CONFIG = {
   security: {
     title: 'SECURITY AGENT',
     getStats: (data) => {
-      const totalFixed = (data.issuesFixed?.critical || 0) + 
-                         (data.issuesFixed?.high || 0) + 
-                         (data.issuesFixed?.medium || 0) + 
+      const totalFixed = (data.issuesFixed?.critical || 0) +
+                         (data.issuesFixed?.high || 0) +
+                         (data.issuesFixed?.medium || 0) +
                          (data.issuesFixed?.low || 0);
       return [
         { label: 'Issues Fixed', value: totalFixed },
-        { label: 'Critical', value: data.issuesFixed?.critical || 0 },
-        { label: 'High', value: data.issuesFixed?.high || 0 },
-        { label: 'Medium', value: data.issuesFixed?.medium || 0 },
-        { label: 'Low', value: data.issuesFixed?.low || 0 },
-        { label: 'Audits Done', value: data.totalAudits || 0 },
-        { label: 'Patterns Added', value: data.patternsAdded || 0 }
+        { label: 'Critical',     value: data.issuesFixed?.critical || 0 },
+        { label: 'High',         value: data.issuesFixed?.high || 0 },
+        { label: 'Medium',       value: data.issuesFixed?.medium || 0 },
+        { label: 'Low',          value: data.issuesFixed?.low || 0 },
       ];
     }
   },
   testing: {
     title: 'TESTING AGENT',
     getStats: (data) => [
-      { label: 'Tests Written', value: data.totalTests || 0 },
-      { label: 'Unit Tests', value: data.testsWritten?.unit || 0 },
-      { label: 'Integration', value: data.testsWritten?.integration || 0 },
-      { label: 'E2E Tests', value: data.testsWritten?.e2e || 0 },
-      { label: 'Tests Fixed', value: data.testsFixed || 0 },
-      { label: 'Patterns Added', value: data.patternsAdded || 0 }
+      { label: 'Unit Tests',   value: data.testsWritten?.unit || 0 },
+      { label: 'Integration',  value: data.testsWritten?.integration || 0 },
+      { label: 'E2E Tests',    value: data.testsWritten?.e2e || 0 },
+      { label: 'Tests Fixed',  value: data.testsFixed || 0 },
     ]
   },
   'code-review': {
     title: 'CODE REVIEW AGENT',
-    getStats: (data) => [
-      { label: 'Total Reviews', value: data.totalReviews || 0 },
-      { label: 'Critical Found', value: data.issuesFound?.critical || 0 },
-      { label: 'High Found', value: data.issuesFound?.high || 0 },
-      { label: 'Medium Found', value: data.issuesFound?.medium || 0 },
-      { label: 'Low Found', value: data.issuesFound?.low || 0 },
-      { label: 'Patterns Added', value: data.patternsAdded || 0 }
-    ]
+    getStats: (data) => {
+      const totalFixed = (data.issuesFixed?.critical || 0) +
+                         (data.issuesFixed?.high || 0) +
+                         (data.issuesFixed?.medium || 0) +
+                         (data.issuesFixed?.low || 0);
+      return [
+        { label: 'Issues Fixed', value: totalFixed },
+        { label: 'Critical',     value: data.issuesFixed?.critical || 0 },
+        { label: 'High',         value: data.issuesFixed?.high || 0 },
+        { label: 'Medium',       value: data.issuesFixed?.medium || 0 },
+        { label: 'Low',          value: data.issuesFixed?.low || 0 },
+      ];
+    }
   },
   docs: {
     title: 'DOCUMENTATION AGENT',
     getStats: (data) => [
-      { label: 'Total Docs', value: data.totalDocsWritten || 0 },
-      { label: 'New Sections', value: data.docsStats?.newSections || 0 },
-      { label: 'Improvements', value: data.docsStats?.improvements || 0 },
-      { label: 'Code Examples', value: data.docsStats?.codeExamples || 0 },
-      { label: 'Tutorials', value: data.docsStats?.tutorials || 0 },
-      { label: 'API Docs', value: data.docsStats?.apiDocs || 0 }
+      { label: 'Sections',   value: data.docsWritten?.sections || 0 },
+      { label: 'Tutorials',  value: data.docsWritten?.tutorials || 0 },
+      { label: 'API Docs',   value: data.docsWritten?.apiDocs || 0 },
     ]
   }
 };
@@ -65,7 +63,7 @@ export function progressBar(current, max, width = 16) {
 
 export function getNextLevelXp(currentLevel, levelThresholds) {
   const nextLevel = levelThresholds?.find(t => t.level === currentLevel + 1);
-  return nextLevel ? nextLevel.xpRequired : null;
+  return nextLevel ? nextLevel.xpToNextLevel : null;
 }
 
 function line(content) {
