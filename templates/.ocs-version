@@ -1,3 +1,4 @@
+1.3.5: Fix agent and skill files showing as conflicts instead of being smart merged on update
 1.3.4: Re-release to trigger npm publish pipeline
 1.3.3: Fix mandatory level-up reset and XP carry-over rule missing from all agents and skills
 1.3.2: Fix stats display and smart merge to use correct xp.json field names

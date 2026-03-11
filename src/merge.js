@@ -24,7 +24,7 @@ export const FILE_CATEGORY = {
 };
 
 const PROTECTED_CATEGORIES = [FILE_CATEGORY.XP_DATA, FILE_CATEGORY.MEMORIES];
-const SMART_MERGE_CATEGORIES = [FILE_CATEGORY.XP_DATA, FILE_CATEGORY.MEMORIES, FILE_CATEGORY.KNOWLEDGE, FILE_CATEGORY.AGENT];
+const SMART_MERGE_CATEGORIES = [FILE_CATEGORY.XP_DATA, FILE_CATEGORY.MEMORIES, FILE_CATEGORY.KNOWLEDGE, FILE_CATEGORY.AGENT, FILE_CATEGORY.SKILL];
 
 const USER_PRESERVE_FIELDS = ['mode', 'tools', 'model', 'temperature', 'permission', 'hidden', 'color'];
 
@@ -145,10 +145,10 @@ function getCategory(relativePath) {
   if (pathLower.includes('/knowledge.md')) {
     return FILE_CATEGORY.KNOWLEDGE;
   }
-  if (pathLower.includes('/skills/')) {
+  if (pathLower.includes('/skills/') || pathLower.startsWith('skills/')) {
     return FILE_CATEGORY.SKILL;
   }
-  if (pathLower.includes('/agents/')) {
+  if (pathLower.includes('/agents/') || pathLower.startsWith('agents/')) {
     return FILE_CATEGORY.AGENT;
   }
   return FILE_CATEGORY.SKILL;
@@ -557,6 +557,28 @@ export async function performUpdate(targetDir, options = {}) {
         results.merged.push({ 
           path: relativePath, 
           action: 'smart-merged', 
+          preserveInfo
+        });
+        continue;
+      }
+
+      if (category === FILE_CATEGORY.SKILL) {
+        const userContent = fs.readFileSync(targetPath, 'utf-8');
+        const templateContent = fs.readFileSync(templatePath, 'utf-8');
+
+        const mergeResult = smartMergeAgent(userContent, templateContent);
+
+        if (!checkOnly) {
+          fs.writeFileSync(targetPath, mergeResult.content, 'utf-8');
+        }
+
+        const preserveInfo = mergeResult.preservedFields.length > 0
+          ? `${mergeResult.preservedFields.join(', ')} preserved`
+          : 'updated';
+
+        results.merged.push({
+          path: relativePath,
+          action: 'smart-merged',
           preserveInfo
         });
         continue;
