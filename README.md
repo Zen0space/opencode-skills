@@ -331,7 +331,7 @@ All agents share these rules that cannot be overridden:
 
 ```
 opencode-skills/
-├── package.json             # npm package config (v1.3.2)
+├── package.json             # npm package config (v1.3.3)
 ├── bin/cli.js               # CLI entry point
 ├── src/                     # Source files
 │   ├── init.js
@@ -392,7 +392,7 @@ Usage:
 
 ### Stats showing zeros or MAX LEVEL incorrectly
 
-Make sure you're on v1.3.2 or later:
+Make sure you're on v1.3.3 or later:
 ```bash
 npx ocs-stats update
 ```
