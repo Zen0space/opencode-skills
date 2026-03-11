@@ -31,7 +31,7 @@ const USER_PRESERVE_FIELDS = ['mode', 'tools', 'model', 'temperature', 'permissi
 function hashFile(filePath) {
   if (!fs.existsSync(filePath)) return null;
   const content = fs.readFileSync(filePath, 'utf-8');
-  return crypto.createHash('md5').update(content).digest('hex');
+  return crypto.createHash('sha256').update(content).digest('hex');
 }
 
 function parseFrontmatter(content) {
@@ -477,8 +477,21 @@ export async function performUpdate(targetDir, options = {}) {
     
     if (SMART_MERGE_CATEGORIES.includes(category)) {
       if (category === FILE_CATEGORY.XP_DATA) {
-        const userXp = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
-        const templateXp = JSON.parse(fs.readFileSync(templatePath, 'utf-8'));
+        let userXp, templateXp;
+        try {
+          userXp = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
+        } catch {
+          console.error(`  Warning: Could not parse ${relativePath} — file may be corrupted. Skipping.`);
+          results.skipped.push({ path: relativePath, reason: 'corrupted JSON' });
+          continue;
+        }
+        try {
+          templateXp = JSON.parse(fs.readFileSync(templatePath, 'utf-8'));
+        } catch {
+          console.error(`  Warning: Could not parse template ${relativePath}. Skipping.`);
+          results.skipped.push({ path: relativePath, reason: 'corrupted template JSON' });
+          continue;
+        }
         
         const preserveInfo = getSmartMergePreserveInfo(userXp, templateXp);
         

@@ -57,14 +57,30 @@ All mistakes are recorded in:
 
 ### Level Thresholds
 
-| Level | Title | XP Required | Focus |
-|-------|-------|-------------|-------|
-| 1 | Novice | 0 | Basic unit tests |
-| 2 | Apprentice | 150 | Integration tests |
+| Level | Title | XP to Next Level | Focus |
+|-------|-------|-----------------|-------|
+| 1 | Novice | 150 | Basic unit tests |
+| 2 | Apprentice | 300 | Integration tests |
 | 3 | Practitioner | 450 | E2E tests |
-| 4 | Expert | 900 | Test patterns & mocking |
-| 5 | Master | 1500 | Full coverage strategies |
-| 6 | Grandmaster | 3000 | Testing excellence |
+| 4 | Expert | 1500 | Test patterns & mocking |
+| 5 | Master | 3000 | Full coverage strategies |
+| 6 | Grandmaster | — (max) | Testing excellence |
+
+### Level-Up Rule (MANDATORY)
+
+When XP earned causes `xp` to reach or exceed `xpToNextLevel` for the current level:
+
+1. Subtract `xpToNextLevel` from the total XP — the remainder is the carry-over
+2. Increment `level` by 1
+3. Set `title` to the new level's title
+4. Set `xp` to the carry-over amount (never accumulate XP across levels)
+5. Save updated `level`, `title`, and `xp` to `.opencode/testing/xp.json`
+
+**Example:** Level 1 (`xpToNextLevel = 150`), earn 230 XP total
+→ carry-over = 230 − 150 = 80
+→ Save: `level = 2`, `title = "Apprentice"`, `xp = 80`
+
+**Chain level-ups:** If carry-over also meets or exceeds the next level's threshold, repeat until it doesn't.
 
 ## Level-Specific Focus
 
