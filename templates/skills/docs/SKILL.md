@@ -262,6 +262,22 @@ code here
 9. Update XP in `.opencode/docs/xp.json`
 10. Update `knowledge.md` with new patterns or lessons
 
+### Level-Up Rule (MANDATORY)
+
+When XP earned causes `xp` to reach or exceed `xpToNextLevel` for the current level:
+
+1. Subtract `xpToNextLevel` from the total XP — the remainder is the carry-over
+2. Increment `level` by 1
+3. Set `title` to the new level's title
+4. Set `xp` to the carry-over amount (never accumulate XP across levels)
+5. Save updated `level`, `title`, and `xp` to `.opencode/docs/xp.json`
+
+**Example:** Level 1 (`xpToNextLevel = 150`), earn 230 XP total
+→ carry-over = 230 − 150 = 80
+→ Save: `level = 2`, `title = "Apprentice"`, `xp = 80`
+
+**Chain level-ups:** If carry-over also meets or exceeds the next level's threshold, repeat until it doesn't.
+
 ### XP Awards
 
 | Action | XP |
